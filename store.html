@@ -131,7 +131,7 @@
   <section>
     <div class="mb-4 top-0 right-0 mr-4 mt-20 fixed">
       <div style="max-height: calc(100vh - 6rem);" class="bg-white text-gray-700 body-font shadow-lg border rounded-lg flex flex-col">
-        <div class="overflow-y-auto px-4 pt-4">
+        <div id="cart-product-list-container"class="overflow-y-auto px-4 pt-4">
           <div class="mb-6">
             <div class="block relative h-24 rounded overflow-hidden">
               <img alt="ecommerce" class="object-cover object-center w-full h-full block rounded" src="https://dummyimage.com/210x130/F00/F00">
@@ -176,8 +176,22 @@
     </button>
   </section>
 
-  <style>
-
-  </style>
+  <template>
+    <div class="mb-6">
+      <div class="block relative h-24 rounded overflow-hidden">
+        <img alt="ecommerce" class="object-cover object-center w-full h-full block rounded" src="">
+        <button data-remove-from-cart-button class="absolute top-0 right-0 bg-black rounded-tr text-white w-6 h-6 text-lg flex justify-center items-center">&times;</button>
+      </div>
+      <div class="mt-2 flex justify-between">
+        <div class="flex items-center title-font">
+          <h2 class="text-gray-900 text-lg font-medium">
+            
+          </h2>
+          <span class="text-gray-600 text-sm font-bold ml-1"></span>
+        </div>
+        <div class="total-product-price"></div>
+      </div>
+    </div>
+  </template>
 </body>
 </html>

@@ -1,4 +1,5 @@
 const buttons = document.querySelectorAll("button")
+const cartProductList = document.querySelector("#cart-product-list-container")
 
 buttons.forEach((button) => {
   if (button.innerText === "Add To Cart") {
@@ -40,7 +41,6 @@ function productPacker(button) {
   product.price = Number(
     productContainer.querySelector("p").textContent.substring(1)
   )
-  console.log(product)
 
   productColor.forEach((color) => {
     if (product.name === color) {
@@ -48,7 +48,17 @@ function productPacker(button) {
     }
   })
 
-  console.log(productNumbering)
+  cartAdder(product, productNumbering)
+}
 
-  // cartAdder(product, productNumbering)
+function cartAdder(product, productNumbering) {
+  console.log(product, productNumbering)
+
+  const template = document.getElementsByTagName("template")[0]
+  const clone = template.content.cloneNode(true)
+  clone.querySelector("img").src = product.image
+  clone.querySelector("h2").innerText = product.name
+  clone.querySelector("span").innerText = product.quantity
+  clone.querySelector(".total-product-price").innerText = product.price
+  cartProductList.append(clone)
 }
