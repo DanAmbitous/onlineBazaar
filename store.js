@@ -38,6 +38,7 @@ function productPacker(button) {
   const product = {}
   product.image = productContainer.querySelector("img").src
   product.name = productContainer.querySelector("h2").textContent
+  product.quantity = productNumbering[product.name]
   product.price = Number(
     productContainer.querySelector("p").textContent.substring(1)
   )
@@ -48,17 +49,20 @@ function productPacker(button) {
     }
   })
 
+  console.log(product)
+  console.table(productNumbering)
+
   cartAdder(product, productNumbering)
 }
 
 function cartAdder(product, productNumbering) {
-  console.log(product, productNumbering)
-
   const template = document.getElementsByTagName("template")[0]
   const clone = template.content.cloneNode(true)
   clone.querySelector("img").src = product.image
   clone.querySelector("h2").innerText = product.name
-  clone.querySelector("span").innerText = product.quantity
-  clone.querySelector(".total-product-price").innerText = product.price
+  clone.querySelector("span").innerHTML = "x" + product.quantity
+  clone.querySelector(".total-product-price").innerText =
+    "$" + product.price + ".00"
+
   cartProductList.append(clone)
 }
