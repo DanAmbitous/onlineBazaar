@@ -16,6 +16,21 @@ productContainer.addEventListener("click", (e) => {
   }
 })
 
+const productColor = [
+  "Red",
+  "Yellow",
+  "Blue",
+  "Orange",
+  "Green",
+  "Purple",
+  "Light Gray",
+  "Dark Gray",
+]
+const productNumbering = {}
+productColor.forEach((product) => {
+  productNumbering[`${product}`] = 0
+})
+
 function productPacker(button) {
   const productContainer = button.closest(".w-full")
 
@@ -27,20 +42,15 @@ function productPacker(button) {
   )
   console.log(product)
 
-  const productColor = [
-    "Red",
-    "Yellow",
-    "Blue",
-    "Orange",
-    "Green",
-    "Purple",
-    "Light Gray",
-    "Dark Gray",
-  ]
-  const productNumbering = {}
-  productColor.forEach((product) => {
-    productNumbering[`${product}`] = 0
-  })
+  if (product.name === "Red") {
+    productNumbering[product.name] += 1
+  } else {
+    console.log("on the nice track")
+  }
 
-  console.log(productNumbering)
+  console.log(productNumbering.Red)
+
+  // cartAdder(product, productNumbering)
 }
+
+console.log(productNumbering.Red)
