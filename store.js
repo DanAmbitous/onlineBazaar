@@ -42,15 +42,13 @@ function productPacker(button) {
   )
   console.log(product)
 
-  if (product.name === "Red") {
-    productNumbering[product.name] += 1
-  } else {
-    console.log("on the nice track")
-  }
+  productColor.forEach((color) => {
+    if (product.name === color) {
+      productNumbering[product.name] += 1
+    }
+  })
 
-  console.log(productNumbering.Red)
+  console.log(productNumbering)
 
   // cartAdder(product, productNumbering)
 }
-
-console.log(productNumbering.Red)
