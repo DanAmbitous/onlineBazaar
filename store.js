@@ -49,20 +49,42 @@ function productPacker(button) {
     }
   })
 
-  console.log(product)
-  console.table(productNumbering)
-
   cartAdder(product, productNumbering)
 }
+
+const redProduct = []
 
 function cartAdder(product, productNumbering) {
   const template = document.getElementsByTagName("template")[0]
   const clone = template.content.cloneNode(true)
   clone.querySelector("img").src = product.image
   clone.querySelector("h2").innerText = product.name
-  clone.querySelector("span").innerHTML = "x" + product.quantity
+
   clone.querySelector(".total-product-price").innerText =
     "$" + product.price + ".00"
+
+  const productsInTheCart = cartProductList.querySelectorAll("h2")
+
+  for (const [key, value] of Object.entries(productNumbering)) {
+    if (value > 1) {
+      const productName = cartProductList.querySelector(".text-gray-900")
+
+      if (productName.innerText === key) {
+        // console.log(productName)
+        // console.log(productName.closest(".cart-item")).remove()
+        clone.querySelector("span").innerHTML = "x" + product.quantity
+
+        console.log(
+          Number(
+            productName
+              .closest(".cart-item")
+              .querySelector(".ml-1")
+              .innerText.substring(1)
+          )
+        )
+      }
+    }
+  }
 
   cartProductList.append(clone)
 }
