@@ -88,14 +88,17 @@ function cartAdder(product, productNumbering) {
       console.log(key, value)
 
       const products = Array.from(cartProductList.querySelectorAll(`.${key}`))
-      console.log(products)
-
-      products.forEach((product) => {
-        console.log(product)
-        if (product.querySelector("h2").innerText != value.toString()) {
-          product.remove()
-        }
+      const outdatedProducts = products.slice(0, -1)
+      outdatedProducts.forEach((outdatedProduct) => {
+        outdatedProduct.remove()
       })
+
+      // products.forEach((product) => {
+      //   console.log(product)
+      //   if (product.querySelector("h2").innerText != value.toString()) {
+      //     product.remove()
+      //   }
+      // })
     }
   }
 
