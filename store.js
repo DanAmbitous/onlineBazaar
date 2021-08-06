@@ -2,7 +2,7 @@ const buttons = document.querySelectorAll("button")
 const cartProductList = document.querySelector("#cart-product-list-container")
 const cartButton = document.querySelector("#cart-button")
 
-// cartChecker()
+cartShower()
 
 buttons.forEach((button) => {
   if (button.innerText === "Add To Cart") {
@@ -114,6 +114,23 @@ function cartAdder(product, productNumbering) {
   }
 
   totalPrice(product.price)
+
+  const numberOfProducts = []
+
+  for (const [key, value] of Object.entries(productNumbering)) {
+    console.log(key, value)
+
+    numberOfProducts.push(value)
+
+    const totalQuantityOfProducts = numberOfProducts.reduce(
+      (sum, product) => sum + product,
+      0
+    )
+    console.log(totalQuantityOfProducts)
+
+    document.querySelector(".product-number").innerText =
+      totalQuantityOfProducts
+  }
 }
 
 const productPrices = []
@@ -128,8 +145,11 @@ function totalPrice(productPrice) {
   document.querySelector(".grand-total-price").innerText = "$" + totalPrice
 }
 
-function cartChecker() {
-  if (cartButton.dataset.status === "show") {
+function cartShower() {
+  if (
+    cartProductList.children.length === 0 ||
+    cartButton.dataset.status === "show"
+  ) {
     cartButton.dataset.status = "hide"
     document.querySelector(".list-container").style.display = "none"
   } else if (cartButton.dataset.status === "hide") {
@@ -139,6 +159,5 @@ function cartChecker() {
 }
 
 cartButton.addEventListener("click", (e) => {
-  console.log("hi")
-  cartChecker()
+  cartShower()
 })
