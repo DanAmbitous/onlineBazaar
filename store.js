@@ -70,9 +70,7 @@ function cartAdder(product, productNumbering) {
       const productName = cartProductList.querySelector(".text-gray-900")
 
       if (productName.innerText === key) {
-        // console.log(productName)
-        // console.log(productName.closest(".cart-item")).remove()
-        clone.querySelector("span").innerHTML = "x" + (product.quantity + 1)
+        clone.querySelector("span").innerHTML = "x" + product.quantity
         clone.querySelector(".total-product-price").innerText =
           "$" + product.price * product.quantity + ".00"
 
