@@ -64,7 +64,15 @@ function cartAdder(product, productNumbering) {
   const template = document.getElementsByTagName("template")[0]
   const clone = template.content.cloneNode(true)
   clone.querySelector("img").src = product.image
-  clone.querySelector("h2").innerText = product.name
+  console.log(product.name)
+  if (product.name === "LightGray") {
+    clone.querySelector("h2").innerText = "Light Gray"
+  } else if (product.name === "DarkGray") {
+    clone.querySelector("h2").innerText = "Dark Gray"
+  } else {
+    clone.querySelector("h2").innerText = product.name
+  }
+
   clone.querySelector("span").innerHTML = "x" + product.quantity
   clone.querySelector(".total-product-price").innerText =
     "$" + product.price + ".00"
