@@ -1,5 +1,8 @@
 const buttons = document.querySelectorAll("button")
 const cartProductList = document.querySelector("#cart-product-list-container")
+const cartButton = document.querySelector("#cart-button")
+
+// cartChecker()
 
 buttons.forEach((button) => {
   if (button.innerText === "Add To Cart") {
@@ -124,3 +127,18 @@ function totalPrice(productPrice) {
 
   document.querySelector(".grand-total-price").innerText = "$" + totalPrice
 }
+
+function cartChecker() {
+  if (cartButton.dataset.status === "show") {
+    cartButton.dataset.status = "hide"
+    document.querySelector(".list-container").style.display = "none"
+  } else if (cartButton.dataset.status === "hide") {
+    cartButton.dataset.status = "show"
+    document.querySelector(".list-container").style.display = "block"
+  }
+}
+
+cartButton.addEventListener("click", (e) => {
+  console.log("hi")
+  cartChecker()
+})
