@@ -64,7 +64,6 @@ function cartAdder(product, productNumbering) {
   const template = document.getElementsByTagName("template")[0]
   const clone = template.content.cloneNode(true)
   clone.querySelector("img").src = product.image
-  console.log(product.name)
   if (product.name === "LightGray") {
     clone.querySelector("h2").innerText = "Light Gray"
   } else if (product.name === "DarkGray") {
@@ -103,12 +102,7 @@ function cartAdder(product, productNumbering) {
 
   for (const [key, value] of Object.entries(productNumbering)) {
     if (value > 1) {
-      console.log(key, value)
-
-      console.log(key)
-
       const products = Array.from(cartProductList.querySelectorAll(`.${key}`))
-      console.log(products)
       const outdatedProducts = products.slice(0, -1)
       outdatedProducts.forEach((outdatedProduct) => {
         outdatedProduct.remove()
@@ -116,27 +110,21 @@ function cartAdder(product, productNumbering) {
     }
   }
 
-  // const products = Array.from(cartProductList.querySelectorAll(".cart-item"))
-  // products.forEach(product => {
-  //   if (product.querySelector('h2').innerText)
-  // });
-
-  // const redProducts = Array.from(cartProductList.querySelectorAll(".Red"))
-  // const outdatedRedProducts = redProducts.slice(0, -1)
-  // outdatedRedProducts.forEach((outdatedRedProduct) => {
-  //   outdatedRedProduct.remove()
-  // })
-
-  // const YellowProducts = Array.from(cartProductList.querySelectorAll(".Yellow"))
-  // const outdatedYellowProducts = YellowProducts.slice(0, -1)
-  // outdatedYellowProducts.forEach((outdatedYellowProduct) => {
-  //   outdatedYellowProduct.remove()
-  // })
+  totalPrice()
 }
 
-// Number(
-//   productName
-//     .closest(".cart-item")
-//     .querySelector(".ml-1")
-//     .innerText.substring(1)
-// )
+function totalPrice() {
+  const productTotalsElements = Array.from(
+    document.querySelectorAll(".total-product-price")
+  )
+
+  const productTotals = []
+
+  productTotalsElements.forEach((productTotal) => {
+    productTotal.innerText = productTotal.innerText.replace(/[$0.]/g, "")
+
+    productTotals.push(productTotal.innerText)
+  })
+
+  console.log(productTotals)
+}
