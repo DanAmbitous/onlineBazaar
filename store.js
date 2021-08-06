@@ -52,8 +52,6 @@ function productPacker(button) {
   cartAdder(product, productNumbering)
 }
 
-const redProduct = []
-
 function cartAdder(product, productNumbering) {
   const template = document.getElementsByTagName("template")[0]
   const clone = template.content.cloneNode(true)
@@ -62,8 +60,7 @@ function cartAdder(product, productNumbering) {
   clone.querySelector("span").innerHTML = "x" + product.quantity
   clone.querySelector(".total-product-price").innerText =
     "$" + product.price + ".00"
-
-  const productsInTheCart = cartProductList.querySelectorAll("h2")
+  clone.querySelector(".cart-item").classList.add(product.name)
 
   for (const [key, value] of Object.entries(productNumbering)) {
     if (value > 1) {
@@ -73,13 +70,17 @@ function cartAdder(product, productNumbering) {
         clone.querySelector("span").innerHTML = "x" + product.quantity
         clone.querySelector(".total-product-price").innerText =
           "$" + product.price * product.quantity + ".00"
-
-        console.log(product.quantity)
       }
     }
   }
 
   cartProductList.append(clone)
+
+  const redProducts = Array.from(cartProductList.querySelectorAll(".Red"))
+  const outdatedRedProducts = redProducts.slice(0, -1)
+  outdatedRedProducts.forEach((outdatedRedProduct) => {
+    outdatedRedProduct.remove()
+  })
 }
 
 // Number(
