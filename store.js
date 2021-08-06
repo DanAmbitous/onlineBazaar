@@ -38,7 +38,7 @@ function productPacker(button) {
   const product = {}
   product.image = productContainer.querySelector("img").src
   product.name = productContainer.querySelector("h2").textContent
-  product.quantity = productNumbering[product.name]
+  product.quantity = productNumbering[product.name] + 1
   product.price = Number(
     productContainer.querySelector("p").textContent.substring(1)
   )
@@ -59,7 +59,7 @@ function cartAdder(product, productNumbering) {
   const clone = template.content.cloneNode(true)
   clone.querySelector("img").src = product.image
   clone.querySelector("h2").innerText = product.name
-
+  clone.querySelector("span").innerHTML = "x" + product.quantity
   clone.querySelector(".total-product-price").innerText =
     "$" + product.price + ".00"
 
@@ -72,19 +72,21 @@ function cartAdder(product, productNumbering) {
       if (productName.innerText === key) {
         // console.log(productName)
         // console.log(productName.closest(".cart-item")).remove()
-        clone.querySelector("span").innerHTML = "x" + product.quantity
+        clone.querySelector("span").innerHTML = "x" + (product.quantity + 1)
+        clone.querySelector(".total-product-price").innerText =
+          "$" + product.price * product.quantity + ".00"
 
-        console.log(
-          Number(
-            productName
-              .closest(".cart-item")
-              .querySelector(".ml-1")
-              .innerText.substring(1)
-          )
-        )
+        console.log(product.quantity)
       }
     }
   }
 
   cartProductList.append(clone)
 }
+
+// Number(
+//   productName
+//     .closest(".cart-item")
+//     .querySelector(".ml-1")
+//     .innerText.substring(1)
+// )
