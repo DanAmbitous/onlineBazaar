@@ -110,21 +110,17 @@ function cartAdder(product, productNumbering) {
     }
   }
 
-  totalPrice()
+  totalPrice(product.price)
 }
 
-function totalPrice() {
-  const productTotalsElements = Array.from(
-    document.querySelectorAll(".total-product-price")
-  )
+const productPrices = []
 
-  const productTotals = []
+function totalPrice(productPrice) {
+  productPrices.push(productPrice)
 
-  productTotalsElements.forEach((productTotal) => {
-    productTotal.innerText = productTotal.innerText.replace(/[$0.]/g, "")
+  const totalPrice = productPrices.reduce((total, productsPrice) => {
+    return total + productsPrice
+  }, 0)
 
-    productTotals.push(productTotal.innerText)
-  })
-
-  console.log(productTotals)
+  document.querySelector(".grand-total-price").innerText = "$" + totalPrice
 }
