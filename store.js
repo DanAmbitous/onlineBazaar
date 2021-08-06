@@ -24,8 +24,8 @@ const productColor = [
   "Orange",
   "Green",
   "Purple",
-  "Light Gray",
-  "Dark Gray",
+  "LightGray",
+  "DarkGray",
 ]
 const productNumbering = {}
 productColor.forEach((product) => {
@@ -37,7 +37,15 @@ function productPacker(button) {
 
   const product = {}
   product.image = productContainer.querySelector("img").src
-  product.name = productContainer.querySelector("h2").textContent
+
+  if (productContainer.querySelector("h2").textContent === "Light Gray") {
+    product.name = "LightGray"
+  } else if (productContainer.querySelector("h2").textContent === "Dark Gray") {
+    product.name = "DarkGray"
+  } else {
+    product.name = productContainer.querySelector("h2").textContent
+  }
+
   product.quantity = productNumbering[product.name] + 1
   product.price = Number(
     productContainer.querySelector("p").textContent.substring(1)
@@ -60,13 +68,15 @@ function cartAdder(product, productNumbering) {
   clone.querySelector("span").innerHTML = "x" + product.quantity
   clone.querySelector(".total-product-price").innerText =
     "$" + product.price + ".00"
-  clone.querySelector(".cart-item").classList.add(product.name)
-  if (!product.name === "Dark Gray" || !product.name === "Light Gray") {
+
+  if (product.name === "Light Gray") {
+    product.name = "LightGray"
     clone.querySelector(".cart-item").classList.add(product.name)
   } else if (product.name === "Dark Gray") {
-    product.name === "Dark-Gray"
-  } else if (product.name === "Light Gray") {
-    product.name === "Light-Gray"
+    product.name = "DarkGray"
+    clone.querySelector(".cart-item").classList.add(product.name)
+  } else {
+    clone.querySelector(".cart-item").classList.add(product.name)
   }
 
   for (const [key, value] of Object.entries(productNumbering)) {
@@ -87,18 +97,14 @@ function cartAdder(product, productNumbering) {
     if (value > 1) {
       console.log(key, value)
 
+      console.log(key)
+
       const products = Array.from(cartProductList.querySelectorAll(`.${key}`))
+      console.log(products)
       const outdatedProducts = products.slice(0, -1)
       outdatedProducts.forEach((outdatedProduct) => {
         outdatedProduct.remove()
       })
-
-      // products.forEach((product) => {
-      //   console.log(product)
-      //   if (product.querySelector("h2").innerText != value.toString()) {
-      //     product.remove()
-      //   }
-      // })
     }
   }
 
