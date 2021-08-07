@@ -1,3 +1,8 @@
+{
+  ;("plugins")
+  ;["jsdom-quokka-plugin"]
+}
+
 const buttons = document.querySelectorAll("button")
 const cartProductList = document.querySelector("#cart-product-list-container")
 const cartButton = document.querySelector("#cart-button")
@@ -17,9 +22,9 @@ const productContainer = document
 document.addEventListener("click", (e) => {
   if (e.target.classList.contains("add-to-cart-button")) {
     productPacker(e.target)
-  } /*else if (e.target.classList.contains(".remove-product")) {
-    console.log("hi")
-  }*/
+  } else if (e.target.classList.contains("remove-product")) {
+    productPacker(e.target)
+  }
 })
 
 const productColor = [
@@ -38,99 +43,121 @@ productColor.forEach((product) => {
 })
 
 function productPacker(button) {
-  const productContainer = button.closest(".w-full")
-  const product = {}
-  product.image = productContainer.querySelector("img").src
+  if (button.classList.contains("add-to-cart-button")) {
+    const productContainer = button.closest(".w-full")
+    const product = {}
+    product.image = productContainer.querySelector("img").src
 
-  if (productContainer.querySelector("h2").textContent === "Light Gray") {
-    product.name = "LightGray"
-  } else if (productContainer.querySelector("h2").textContent === "Dark Gray") {
-    product.name = "DarkGray"
-  } else {
-    product.name = productContainer.querySelector("h2").textContent
-  }
-  product.quantity = productNumbering[product.name] + 1
-  product.price = Number(
-    productContainer.querySelector("p").textContent.substring(1)
-  )
-  console.log(product)
-  productColor.forEach((color) => {
-    if (product.name === color) {
-      productNumbering[product.name] += 1
+    if (productContainer.querySelector("h2").textContent === "Light Gray") {
+      product.name = "LightGray"
+    } else if (
+      productContainer.querySelector("h2").textContent === "Dark Gray"
+    ) {
+      product.name = "DarkGray"
+    } else {
+      product.name = productContainer.querySelector("h2").textContent
     }
-  })
+    product.quantity = productNumbering[product.name] + 1
+    product.price = Number(
+      productContainer.querySelector("p").textContent.substring(1)
+    )
+    productColor.forEach((color) => {
+      if (product.name === color) {
+        productNumbering[product.name] += 1
+      }
+    })
 
-  cartAdder(product, productNumbering)
+    cartAdder(product, productNumbering, null)
+  } else {
+    cartAdder(null, productNumbering, button)
+  }
 }
 
-function cartAdder(product, productNumbering) {
-  const template = document.getElementsByTagName("template")[0]
-  const clone = template.content.cloneNode(true)
-  clone.querySelector("img").src = product.image
-  if (product.name === "LightGray") {
-    clone.querySelector("h2").innerText = "Light Gray"
-  } else if (product.name === "DarkGray") {
-    clone.querySelector("h2").innerText = "Dark Gray"
-  } else {
-    clone.querySelector("h2").innerText = product.name
-  }
+function cartAdder(product, productNumbering, button) {
+  if (product != null) {
+    const template = document.getElementsByTagName("template")[0]
+    const clone = template.content.cloneNode(true)
+    clone.querySelector("img").src = product.image
+    if (product.name === "LightGray") {
+      clone.querySelector("h2").innerText = "Light Gray"
+    } else if (product.name === "DarkGray") {
+      clone.querySelector("h2").innerText = "Dark Gray"
+    } else {
+      clone.querySelector("h2").innerText = product.name
+    }
 
-  clone.querySelector("span").innerHTML = "x" + product.quantity
-  clone.querySelector(".total-product-price").innerText =
-    "$" + product.price + ".00"
+    clone.querySelector("span").innerHTML = "x" + product.quantity
+    clone.querySelector(".total-product-price").innerText =
+      "$" + product.price + ".00"
 
-  if (product.name === "Light Gray") {
-    product.name = "LightGray"
-    clone.querySelector(".cart-item").classList.add(product.name)
-  } else if (product.name === "Dark Gray") {
-    product.name = "DarkGray"
-    clone.querySelector(".cart-item").classList.add(product.name)
-  } else {
-    clone.querySelector(".cart-item").classList.add(product.name)
-  }
+    if (product.name === "Light Gray") {
+      product.name = "LightGray"
+      clone.querySelector(".cart-item").classList.add(product.name)
+    } else if (product.name === "Dark Gray") {
+      product.name = "DarkGray"
+      clone.querySelector(".cart-item").classList.add(product.name)
+    } else {
+      clone.querySelector(".cart-item").classList.add(product.name)
+    }
 
-  for (const [key, value] of Object.entries(productNumbering)) {
-    if (value > 1) {
-      const productName = cartProductList.querySelector(".text-gray-900")
+    for (const [key, value] of Object.entries(productNumbering)) {
+      if (value > 1) {
+        const productName = cartProductList.querySelector(".text-gray-900")
 
-      if (productName.innerText === key) {
-        clone.querySelector("span").innerHTML = "x" + product.quantity
-        clone.querySelector(".total-product-price").innerText =
-          "$" + product.price * product.quantity + ".00"
+        if (productName.innerText === key) {
+          clone.querySelector("span").innerHTML = "x" + product.quantity
+          clone.querySelector(".total-product-price").innerText =
+            "$" + product.price * product.quantity + ".00"
+        }
       }
     }
-  }
 
-  cartProductList.append(clone)
+    cartProductList.append(clone)
 
-  for (const [key, value] of Object.entries(productNumbering)) {
-    if (value > 1) {
-      const products = Array.from(cartProductList.querySelectorAll(`.${key}`))
-      const outdatedProducts = products.slice(0, -1)
-      outdatedProducts.forEach((outdatedProduct) => {
-        outdatedProduct.remove()
-      })
+    for (const [key, value] of Object.entries(productNumbering)) {
+      if (value > 1) {
+        const products = Array.from(cartProductList.querySelectorAll(`.${key}`))
+        const outdatedProducts = products.slice(0, -1)
+        outdatedProducts.forEach((outdatedProduct) => {
+          outdatedProduct.remove()
+        })
+      }
     }
-  }
 
-  totalPrice(product.price)
+    totalPrice(product.price)
 
-  const numberOfProducts = []
+    const numberOfProducts = []
 
-  for (const [key, value] of Object.entries(productNumbering)) {
-    numberOfProducts.push(value)
+    for (const [key, value] of Object.entries(productNumbering)) {
+      numberOfProducts.push(value)
 
-    const totalQuantityOfProducts = numberOfProducts.reduce(
-      (sum, product) => sum + product,
-      0
+      const totalQuantityOfProducts = numberOfProducts.reduce(
+        (sum, product) => sum + product,
+        0
+      )
+
+      document.querySelector(".product-number").innerText =
+        totalQuantityOfProducts
+    }
+  } else {
+    const quantityOfProduct = Number(
+      button.parentElement.parentElement
+        .querySelector(".text-gray-600")
+        .innerText.substring(1)
     )
+    console.log(quantityOfProduct)
+    if (quantityOfProduct === 1) {
+      console.log("hi")
+    } else {
+      // quantityOfProduct = quantityOfProduct - 1
 
-    document.querySelector(".product-number").innerText =
-      totalQuantityOfProducts
+      button.parentElement.parentElement.querySelector(
+        ".text-gray-600"
+      ).innerText = `x${quantityOfProduct}`
+    }
+
+    console.log(productNumbering)
   }
-
-  console.log(productNumbering)
-  return productNumbering
 }
 
 const productPrices = []
@@ -162,41 +189,47 @@ cartButton.addEventListener("click", (e) => {
 })
 
 // cartProductList.addEventListener("click", (e) => {
-//   if (e.target.classList.contains("absolute")) {
-//     let quantity =
-//       e.target.parentElement.parentElement.querySelector(
-//         ".text-gray-600"
-//       ).innerText
+//   let quantityOfTheProduct = Number(
+//     e.target.parentElement.parentElement
+//       .querySelector(".text-gray-600")
+//       .innerText.substring(1)
+//   )
 
-//     quantity = Number(quantity.replace(/\D+/g, ""))
+//   if (quantityOfTheProduct === 1) {
+//     console.log("hi")
+//   } else {
+//     quantityOfTheProduct -= 1
 
-//     if (quantity <= 1) {
-//       e.target.parentElement.parentElement.remove()
-
-//       cartShower()
-//     } else {
-//       quantity -= 1
-
-//       e.target.parentElement.parentElement.querySelector(
-//         ".text-gray-600"
-//       ).innerText = `x${quantity}`
-
-//       const products = document.querySelectorAll(".cart-item")
-
-//       products.forEach((product) => {
-//         const quantityRaw = product.querySelector(".text-gray-600").innerText
-
-//         const quantityNumber = Number(quantityRaw.replace(/\D+/g, ""))
-
-//         productNumbering[`${product.querySelector(".mt-2").innerText}`] =
-//           quantityNumber
-//       })
-
-//       productColor.forEach((product) => {
-//         productNumbering[`${product}`] = 0
-//       })
-//     }
-
-//     console.log(productNumbering)
+//     e.target.parentElement.parentElement.querySelector(
+//       ".text-gray-600"
+//     ).innerText = `x${quantityOfTheProduct}`
 //   }
+
+// if (e.target.classList.contains("absolute")) {
+//   let quantity =
+//     e.target.parentElement.parentElement.querySelector(
+//       ".text-gray-600"
+//     ).innerText
+//   quantity = Number(quantity.replace(/\D+/g, ""))
+//   if (quantity <= 1) {
+//     e.target.parentElement.parentElement.remove()
+//     cartShower()
+//   } else {
+//     quantity -= 1
+//     e.target.parentElement.parentElement.querySelector(
+//       ".text-gray-600"
+//     ).innerText = `x${quantity}`
+//     const products = document.querySelectorAll(".cart-item")
+//     products.forEach((product) => {
+//       const quantityRaw = product.querySelector(".text-gray-600").innerText
+//       const quantityNumber = Number(quantityRaw.replace(/\D+/g, ""))
+//       productNumbering[`${product.querySelector(".mt-2").innerText}`] =
+//         quantityNumber
+//     })
+//     productColor.forEach((product) => {
+//       productNumbering[`${product}`] = 0
+//     })
+//   }
+//   console.log(productNumbering)
+// }
 // })
