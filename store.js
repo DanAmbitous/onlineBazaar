@@ -118,15 +118,12 @@ function cartAdder(product, productNumbering) {
   const numberOfProducts = []
 
   for (const [key, value] of Object.entries(productNumbering)) {
-    console.log(key, value)
-
     numberOfProducts.push(value)
 
     const totalQuantityOfProducts = numberOfProducts.reduce(
       (sum, product) => sum + product,
       0
     )
-    console.log(totalQuantityOfProducts)
 
     document.querySelector(".product-number").innerText =
       totalQuantityOfProducts
@@ -160,4 +157,25 @@ function cartShower() {
 
 cartButton.addEventListener("click", (e) => {
   cartShower()
+})
+
+cartProductList.addEventListener("click", (e) => {
+  if (e.target.classList.contains("absolute")) {
+    let quantity =
+      e.target.parentElement.parentElement.querySelector(
+        ".text-gray-600"
+      ).innerText
+
+    quantity = Number(quantity.replace(/\D+/g, ""))
+
+    if (quantity <= 1) {
+      e.target.parentElement.parentElement.remove()
+
+      cartShower()
+    } else {
+      e.target.parentElement.parentElement.querySelector(
+        ".text-gray-600"
+      ).innerText = `x${quantity}`
+    }
+  }
 })
