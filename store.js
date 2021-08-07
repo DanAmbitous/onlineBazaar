@@ -14,10 +14,12 @@ const productContainer = document
   .querySelector(".add-to-cart-button")
   .closest(".flex-wrap")
 
-productContainer.addEventListener("click", (e) => {
+document.addEventListener("click", (e) => {
   if (e.target.classList.contains("add-to-cart-button")) {
     productPacker(e.target)
-  }
+  } /*else if (e.target.classList.contains(".remove-product")) {
+    console.log("hi")
+  }*/
 })
 
 const productColor = [
@@ -37,7 +39,6 @@ productColor.forEach((product) => {
 
 function productPacker(button) {
   const productContainer = button.closest(".w-full")
-
   const product = {}
   product.image = productContainer.querySelector("img").src
 
@@ -48,12 +49,11 @@ function productPacker(button) {
   } else {
     product.name = productContainer.querySelector("h2").textContent
   }
-
   product.quantity = productNumbering[product.name] + 1
   product.price = Number(
     productContainer.querySelector("p").textContent.substring(1)
   )
-
+  console.log(product)
   productColor.forEach((color) => {
     if (product.name === color) {
       productNumbering[product.name] += 1
@@ -128,10 +128,12 @@ function cartAdder(product, productNumbering) {
     document.querySelector(".product-number").innerText =
       totalQuantityOfProducts
   }
+
+  console.log(productNumbering)
+  return productNumbering
 }
 
 const productPrices = []
-
 function totalPrice(productPrice) {
   productPrices.push(productPrice)
 
@@ -159,23 +161,42 @@ cartButton.addEventListener("click", (e) => {
   cartShower()
 })
 
-cartProductList.addEventListener("click", (e) => {
-  if (e.target.classList.contains("absolute")) {
-    let quantity =
-      e.target.parentElement.parentElement.querySelector(
-        ".text-gray-600"
-      ).innerText
+// cartProductList.addEventListener("click", (e) => {
+//   if (e.target.classList.contains("absolute")) {
+//     let quantity =
+//       e.target.parentElement.parentElement.querySelector(
+//         ".text-gray-600"
+//       ).innerText
 
-    quantity = Number(quantity.replace(/\D+/g, ""))
+//     quantity = Number(quantity.replace(/\D+/g, ""))
 
-    if (quantity <= 1) {
-      e.target.parentElement.parentElement.remove()
+//     if (quantity <= 1) {
+//       e.target.parentElement.parentElement.remove()
 
-      cartShower()
-    } else {
-      e.target.parentElement.parentElement.querySelector(
-        ".text-gray-600"
-      ).innerText = `x${quantity}`
-    }
-  }
-})
+//       cartShower()
+//     } else {
+//       quantity -= 1
+
+//       e.target.parentElement.parentElement.querySelector(
+//         ".text-gray-600"
+//       ).innerText = `x${quantity}`
+
+//       const products = document.querySelectorAll(".cart-item")
+
+//       products.forEach((product) => {
+//         const quantityRaw = product.querySelector(".text-gray-600").innerText
+
+//         const quantityNumber = Number(quantityRaw.replace(/\D+/g, ""))
+
+//         productNumbering[`${product.querySelector(".mt-2").innerText}`] =
+//           quantityNumber
+//       })
+
+//       productColor.forEach((product) => {
+//         productNumbering[`${product}`] = 0
+//       })
+//     }
+
+//     console.log(productNumbering)
+//   }
+// })
