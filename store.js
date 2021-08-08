@@ -130,7 +130,7 @@ function cartAdder(product, productNumbering, button) {
       }
     }
 
-    totalPrice(product.price, null, null)
+    totalPrice(product.price, null, null, null)
 
     const numberOfProducts = []
 
@@ -172,7 +172,7 @@ function cartAdder(product, productNumbering, button) {
 
         cartShower()
 
-        totalPrice(null, key, productCost)
+        totalPrice(null, key, productCost, productNumbering)
 
         quantityOfProduct = 0
       }
@@ -216,7 +216,7 @@ function cartAdder(product, productNumbering, button) {
               .innerText.substring(1)
           )
 
-          totalPrice(null, key, productCost)
+          totalPrice(null, key, productCost, productNumbering)
         }
       }
 
@@ -232,8 +232,22 @@ function cartAdder(product, productNumbering, button) {
 }
 
 const productPrices = []
-function totalPrice(productPrice, key, productCost) {
+function totalPrice(productPrice, key, productCost, productNumbering) {
   if (key != null) {
+    const numberOfProducts = []
+
+    for (const [key, value] of Object.entries(productNumbering)) {
+      numberOfProducts.push(value)
+
+      const totalQuantityOfProducts = numberOfProducts.reduce(
+        (sum, product) => sum + product,
+        0
+      )
+
+      document.querySelector(".product-number").innerText =
+        totalQuantityOfProducts
+    }
+
     console.log(productCost)
 
     const found = productPrices.find(
