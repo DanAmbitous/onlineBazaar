@@ -162,7 +162,11 @@ function cartAdder(product, productNumbering, button) {
         if (key === productName) {
           value = quantityOfProduct
 
-          productNumbering.Red = value
+          for (const key in productNumbering) {
+            if (Object.hasOwnProperty.call(productNumbering, key)) {
+              productNumbering[key] = value
+            }
+          }
         }
       }
 
