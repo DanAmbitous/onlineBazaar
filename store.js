@@ -6,7 +6,7 @@
 const buttons = document.querySelectorAll("button")
 const cartProductList = document.querySelector("#cart-product-list-container")
 const cartButton = document.querySelector("#cart-button")
-const products = Array.from(document.querySelectorAll(".w-full"))
+const products = Array.from(document.querySelectorAll(".p-4"))
 
 cartShower()
 
@@ -38,13 +38,12 @@ const productColor = [
   "LightGray",
   "DarkGray",
 ]
-console.log(products[0])
+
+console.log(products)
 
 productColor.forEach((color, index) => {
   products[index].classList.add(color)
 })
-
-console.log(products)
 
 const productNumbering = {}
 productColor.forEach((product) => {
@@ -75,8 +74,6 @@ function productPacker(button) {
         productNumbering[product.name] += 1
       }
     })
-
-    console.log(productNumbering)
 
     cartAdder(product, productNumbering, null)
   } else {
@@ -168,8 +165,6 @@ function cartAdder(product, productNumbering, button) {
           productNumbering[key] = 0
         }
       }
-
-      console.log(productNumbering)
     } else {
       quantityOfProduct -= 1
 
@@ -179,6 +174,7 @@ function cartAdder(product, productNumbering, button) {
 
       for (const [key, value] of Object.entries(productNumbering)) {
         if (key === productName) {
+          console.log(key)
           value = quantityOfProduct
 
           const totalProductCost =
@@ -186,13 +182,26 @@ function cartAdder(product, productNumbering, button) {
               ".total-product-price"
             )
 
-          const productPrice = document.querySelectorAll("")
+          const productPrice = Number(
+            document
+              .querySelector(`.${key}`)
+              .querySelector(".mt-1")
+              .innerText.substring(1)
+          )
+
+          // const productPrice = document
+          //   .querySelector(`.${key}`)
+          //   .querySelector(".mt-1")
+          // // .innerText.substring(1)
+
+          console.log(productPrice, key)
+
+          totalProductCost.innerText = `$${productPrice * quantityOfProduct}.00`
 
           for (const key in productNumbering) {
             if (Object.hasOwnProperty.call(productNumbering, key)) {
               if (key === productName) {
                 productNumbering[key] = value
-                console.log(productNumbering)
               }
             }
           }
