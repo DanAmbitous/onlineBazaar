@@ -163,7 +163,18 @@ function cartAdder(product, productNumbering, button) {
           productNumbering[key] = 0
         }
 
+        const productCost = Number(
+          document
+            .querySelector(`.${key}`)
+            .querySelector(".mt-1")
+            .innerText.substring(1)
+        )
+
+        cartShower()
+
         totalPrice(null, key, productCost)
+
+        quantityOfProduct = 0
       }
     } else {
       quantityOfProduct -= 1
@@ -198,10 +209,6 @@ function cartAdder(product, productNumbering, button) {
             }
           }
 
-          const allTotalProductPrices = document.querySelectorAll(
-            ".total-product-price"
-          )
-
           const productCost = Number(
             document
               .querySelector(`.${key}`)
@@ -232,11 +239,8 @@ function totalPrice(productPrice, key, productCost) {
     const found = productPrices.find(
       (productPrice) => productPrice === productCost
     )
-    console.log(productPrices)
 
     productPrices.splice(productPrices.indexOf(found), 1)
-
-    console.log(productPrices)
 
     const totalPrice = productPrices.reduce((total, productsPrice) => {
       return total + productsPrice
