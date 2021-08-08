@@ -6,6 +6,7 @@
 const buttons = document.querySelectorAll("button")
 const cartProductList = document.querySelector("#cart-product-list-container")
 const cartButton = document.querySelector("#cart-button")
+const products = Array.from(document.querySelectorAll(".w-full"))
 
 cartShower()
 
@@ -37,6 +38,14 @@ const productColor = [
   "LightGray",
   "DarkGray",
 ]
+console.log(products[0])
+
+productColor.forEach((color, index) => {
+  products[index].classList.add(color)
+})
+
+console.log(products)
+
 const productNumbering = {}
 productColor.forEach((product) => {
   productNumbering[`${product}`] = 0
@@ -172,6 +181,13 @@ function cartAdder(product, productNumbering, button) {
         if (key === productName) {
           value = quantityOfProduct
 
+          const totalProductCost =
+            button.parentElement.parentElement.querySelector(
+              ".total-product-price"
+            )
+
+          const productPrice = document.querySelectorAll("")
+
           for (const key in productNumbering) {
             if (Object.hasOwnProperty.call(productNumbering, key)) {
               if (key === productName) {
@@ -188,12 +204,6 @@ function cartAdder(product, productNumbering, button) {
           .querySelector(".text-gray-600")
           .innerText.substring(1)
       )
-
-      const totalProductCost = button.parentElement.parentElement.querySelector(
-        ".total-product-price"
-      )
-
-      console.log(totalProductCost, quantityOfProduct)
 
       console.log(productNumbering)
     }
