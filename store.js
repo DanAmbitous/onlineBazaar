@@ -39,8 +39,6 @@ const productColor = [
   "DarkGray",
 ]
 
-console.log(products)
-
 productColor.forEach((color, index) => {
   products[index].classList.add(color)
 })
@@ -174,7 +172,6 @@ function cartAdder(product, productNumbering, button) {
 
       for (const [key, value] of Object.entries(productNumbering)) {
         if (key === productName) {
-          console.log(key)
           value = quantityOfProduct
 
           const totalProductCost =
@@ -189,13 +186,6 @@ function cartAdder(product, productNumbering, button) {
               .innerText.substring(1)
           )
 
-          // const productPrice = document
-          //   .querySelector(`.${key}`)
-          //   .querySelector(".mt-1")
-          // // .innerText.substring(1)
-
-          console.log(productPrice, key)
-
           totalProductCost.innerText = `$${productPrice * quantityOfProduct}.00`
 
           for (const key in productNumbering) {
@@ -205,6 +195,20 @@ function cartAdder(product, productNumbering, button) {
               }
             }
           }
+
+          const allTotalProductPrices = document.querySelectorAll(
+            ".total-product-price"
+          )
+
+          allTotalProductPrices.forEach((price) => {
+            // console.log(Number(-price.innerText.substring(1)))
+            // totalPrice(Number(price.innerText.substring(1)))
+
+            document.querySelector(".grand-total-price").innerText =
+              "$" + Number(price.innerText.substring(1))
+          })
+
+          console.log(productPrices)
         }
       }
 
