@@ -67,6 +67,8 @@ function productPacker(button) {
       }
     })
 
+    console.log(productNumbering)
+
     cartAdder(product, productNumbering, null)
   } else {
     cartAdder(null, productNumbering, button)
@@ -172,11 +174,26 @@ function cartAdder(product, productNumbering, button) {
 
           for (const key in productNumbering) {
             if (Object.hasOwnProperty.call(productNumbering, key)) {
-              productNumbering[key] = value
+              if (key === productName) {
+                productNumbering[key] = value
+                console.log(productNumbering)
+              }
             }
           }
         }
       }
+
+      quantityOfProduct = Number(
+        button.parentElement.parentElement
+          .querySelector(".text-gray-600")
+          .innerText.substring(1)
+      )
+
+      const totalProductCost = button.parentElement.parentElement.querySelector(
+        ".total-product-price"
+      )
+
+      console.log(totalProductCost, quantityOfProduct)
 
       console.log(productNumbering)
     }
