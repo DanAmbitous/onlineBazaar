@@ -130,7 +130,7 @@ function cartAdder(product, productNumbering, button) {
       }
     }
 
-    totalPrice(product.price)
+    totalPrice(product.price, null, null)
 
     const numberOfProducts = []
 
@@ -155,13 +155,15 @@ function cartAdder(product, productNumbering, button) {
     const productName =
       button.parentElement.parentElement.querySelector(".font-medium").innerText
 
-    if (quantityOfProduct === 1) {
+    if (quantityOfProduct <= 1) {
       button.parentElement.parentElement.remove()
 
       for (const key in productNumbering) {
         if (Object.hasOwnProperty.call(productNumbering, key)) {
           productNumbering[key] = 0
         }
+
+        totalPrice(null, key, productCost)
       }
     } else {
       quantityOfProduct -= 1
@@ -200,15 +202,14 @@ function cartAdder(product, productNumbering, button) {
             ".total-product-price"
           )
 
-          allTotalProductPrices.forEach((price) => {
-            // console.log(Number(-price.innerText.substring(1)))
-            // totalPrice(Number(price.innerText.substring(1)))
+          const productCost = Number(
+            document
+              .querySelector(`.${key}`)
+              .querySelector(".mt-1")
+              .innerText.substring(1)
+          )
 
-            document.querySelector(".grand-total-price").innerText =
-              "$" + Number(price.innerText.substring(1))
-          })
-
-          console.log(productPrices)
+          totalPrice(null, key, productCost)
         }
       }
 
@@ -224,14 +225,35 @@ function cartAdder(product, productNumbering, button) {
 }
 
 const productPrices = []
-function totalPrice(productPrice) {
-  productPrices.push(productPrice)
+function totalPrice(productPrice, key, productCost) {
+  if (key != null) {
+    console.log(productCost)
 
-  const totalPrice = productPrices.reduce((total, productsPrice) => {
-    return total + productsPrice
-  }, 0)
+    const found = productPrices.find(
+      (productPrice) => productPrice === productCost
+    )
+    console.log(productPrices)
 
-  document.querySelector(".grand-total-price").innerText = "$" + totalPrice
+    productPrices.splice(productPrices.indexOf(found), 1)
+
+    console.log(productPrices)
+
+    const totalPrice = productPrices.reduce((total, productsPrice) => {
+      return total + productsPrice
+    }, 0)
+
+    document.querySelector(".grand-total-price").innerText = "$" + totalPrice
+  } else {
+    productPrices.push(productPrice)
+
+    const totalPrice = productPrices.reduce((total, productsPrice) => {
+      return total + productsPrice
+    }, 0)
+
+    document.querySelector(".grand-total-price").innerText = "$" + totalPrice
+
+    console.log(productPrices)
+  }
 }
 
 function cartShower() {
