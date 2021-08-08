@@ -150,7 +150,15 @@ function cartAdder(product, productNumbering, button) {
       button.parentElement.parentElement.querySelector(".font-medium").innerText
 
     if (quantityOfProduct === 1) {
-      console.log("hi")
+      button.parentElement.parentElement.remove()
+
+      for (const key in productNumbering) {
+        if (Object.hasOwnProperty.call(productNumbering, key)) {
+          productNumbering[key] = 0
+        }
+      }
+
+      console.log(productNumbering)
     } else {
       quantityOfProduct -= 1
 
