@@ -140,23 +140,34 @@ function cartAdder(product, productNumbering, button) {
         totalQuantityOfProducts
     }
   } else {
-    const quantityOfProduct = Number(
+    let quantityOfProduct = Number(
       button.parentElement.parentElement
         .querySelector(".text-gray-600")
         .innerText.substring(1)
     )
-    console.log(quantityOfProduct)
+
+    const productName =
+      button.parentElement.parentElement.querySelector(".font-medium").innerText
+
     if (quantityOfProduct === 1) {
       console.log("hi")
     } else {
-      // quantityOfProduct = quantityOfProduct - 1
+      quantityOfProduct -= 1
 
       button.parentElement.parentElement.querySelector(
         ".text-gray-600"
       ).innerText = `x${quantityOfProduct}`
-    }
 
-    console.log(productNumbering)
+      for (const [key, value] of Object.entries(productNumbering)) {
+        if (key === productName) {
+          value = quantityOfProduct
+
+          productNumbering.Red = value
+        }
+      }
+
+      console.log(productNumbering)
+    }
   }
 }
 
