@@ -330,7 +330,7 @@ function grandTotalPriceDeterminer(button) {
     prices.push(Number(price.innerText.substring(1)))
   })
 
-  const totalPrice = prices.reduce((sum, value) => (sum += value))
+  const totalPrice = prices.reduce((sum, value) => (sum += value), 0)
   document.querySelector(".grand-total-price").innerText = `$${totalPrice}.00`
 }
 
