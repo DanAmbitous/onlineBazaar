@@ -178,9 +178,10 @@ function cartAdder(product, productNumbering, button) {
         productNumbering[key] = value
       }
     }
-
-    quantityOfProductsDeterminer(productNumbering)
     grandTotalPriceDeterminer()
+
+    quantityOfProductsDeterminer(productNumbering, button)
+
     // console.log(button)
 
     // let quantityOfProduct = Number(
@@ -322,12 +323,20 @@ function grandTotalPriceDeterminer() {
   document.querySelector(".grand-total-price").innerText = `$${totalPrice}.00`
 }
 
-function quantityOfProductsDeterminer(productNumbering) {
+function quantityOfProductsDeterminer(productNumbering, button) {
   let productQuantity = 0
   for (const [key, value] of Object.entries(productNumbering)) {
     productQuantity += value
   }
-  document.querySelector(".product-number").innerText = productQuantity
+
+  if (productQuantity === 0) {
+    document.querySelector(".product-number").innerText = productQuantity
+    button.parentElement.parentElement.remove()
+
+    cartShower()
+  } else {
+    document.querySelector(".product-number").innerText = productQuantity
+  }
 }
 
 function cartShower() {
