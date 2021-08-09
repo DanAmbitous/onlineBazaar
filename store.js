@@ -180,6 +180,7 @@ function cartAdder(product, productNumbering, button) {
     }
 
     quantityOfProductsDeterminer(productNumbering)
+    grandTotalPriceDeterminer()
     // console.log(button)
 
     // let quantityOfProduct = Number(
