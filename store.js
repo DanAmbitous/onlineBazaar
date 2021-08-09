@@ -154,9 +154,27 @@ function cartAdder(product, productNumbering, button) {
         ".text-gray-900"
       ).innerText
 
+    const productQuantity =
+      button.parentElement.parentElement.querySelector(".quantity")
+
     for (const [key, value] of Object.entries(productNumbering)) {
       if (key === productName) {
         value -= 1
+        productQuantity.innerText = `x${value}`
+
+        button.parentElement.parentElement.querySelector(
+          ".total-product-price"
+        ).innerText =
+          "$" +
+          Number(
+            document
+              .querySelector(`.${key}`)
+              .querySelector(".mt-1")
+              .innerText.substring(1)
+          ) *
+            Number(productQuantity.innerText.substring(1)) +
+          ".00"
+
         productNumbering[key] = value
       }
     }
