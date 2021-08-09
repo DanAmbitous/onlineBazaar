@@ -23,7 +23,10 @@ const productContainer = document
 document.addEventListener("click", (e) => {
   if (e.target.classList.contains("add-to-cart-button")) {
     productPacker(e.target)
-  } else if (e.target.classList.contains("remove-product")) {
+  } else if (
+    e.target.classList.contains("remove-product") ||
+    e.target.id === "remove-all-products"
+  ) {
     productPacker(e.target, e)
   }
 })
@@ -149,7 +152,7 @@ function cartAdder(product, productNumbering, button, event) {
     // document.querySelector(".product-number").innerText =
     //   theTotalNumberOfProducts
   } else {
-    if (!event.shiftKey) {
+    if (!event.shiftKey && event.target.id !== "remove-all-products") {
       const productName =
         button.parentElement.parentElement.querySelector(
           ".text-gray-900"
@@ -179,9 +182,13 @@ function cartAdder(product, productNumbering, button, event) {
           productNumbering[key] = value
         }
       }
-      quantityOfProductsDeterminer(productNumbering, button)
 
+      quantityOfProductsDeterminer(productNumbering, button)
       grandTotalPriceDeterminer(button)
+    } else if (event.target.id === "remove-all-products") {
+      for (const [key, value] of Object.entries(productNumbering)) {
+        console.log(key, value)
+      }
     } else {
       const productName =
         button.parentElement.parentElement.querySelector(
