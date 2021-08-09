@@ -79,6 +79,7 @@ function productPacker(button) {
   }
 }
 
+// const anEnumerationOfProducts = []
 function cartAdder(product, productNumbering, button) {
   if (product != null) {
     const template = document.getElementsByTagName("template")[0]
@@ -92,10 +93,12 @@ function cartAdder(product, productNumbering, button) {
       clone.querySelector("h2").innerText = product.name
     }
 
+    //Price and quantity of the selected product (Individually)
     clone.querySelector("span").innerHTML = "x" + product.quantity
     clone.querySelector(".total-product-price").innerText =
       "$" + product.price + ".00"
 
+    //To convert the spaced names into a more versitle version of themselves
     if (product.name === "Light Gray") {
       product.name = "LightGray"
       clone.querySelector(".cart-item").classList.add(product.name)
@@ -106,6 +109,7 @@ function cartAdder(product, productNumbering, button) {
       clone.querySelector(".cart-item").classList.add(product.name)
     }
 
+    //To determine the total price of the particular set of items
     for (const [key, value] of Object.entries(productNumbering)) {
       if (value > 1) {
         const productName = cartProductList.querySelector(".text-gray-900")
@@ -118,10 +122,11 @@ function cartAdder(product, productNumbering, button) {
       }
     }
 
-    totalPriceCalculator(product.price, false)
+    quantityOfProductsDeterminer(productNumbering)
 
     cartProductList.append(clone)
 
+    //Remove previous of the same products so only one element would represent it
     for (const [key, value] of Object.entries(productNumbering)) {
       if (value > 1) {
         const products = Array.from(cartProductList.querySelectorAll(`.${key}`))
@@ -132,191 +137,154 @@ function cartAdder(product, productNumbering, button) {
       }
     }
 
-    // totalPrice(product.price, null, null, null)
-
-    const numberOfProducts = []
-
-    for (const [key, value] of Object.entries(productNumbering)) {
-      numberOfProducts.push(value)
-
-      const totalQuantityOfProducts = numberOfProducts.reduce(
-        (sum, product) => sum + product,
-        0
-      )
-
-      document.querySelector(".product-number").innerText =
-        totalQuantityOfProducts
-    }
+    // anEnumerationOfProducts.length = 0
+    // const totalQuantityOfProducts = document.body.querySelectorAll(".quantity")
+    // totalQuantityOfProducts.forEach(() => {
+    //   anEnumerationOfProducts.push(1)
+    // })
+    // const theTotalNumberOfProducts = anEnumerationOfProducts.reduce(
+    //   (sum, value) => (sum += value),
+    //   0
+    // )
+    // document.querySelector(".product-number").innerText =
+    //   theTotalNumberOfProducts
   } else {
-    let quantityOfProduct = Number(
-      button.parentElement.parentElement
-        .querySelector(".text-gray-600")
-        .innerText.substring(1)
-    )
+    console.log("Removal button was clicked")
 
-    const productName =
-      button.parentElement.parentElement.querySelector(".font-medium").innerText
+    // console.log(button)
 
-    if (quantityOfProduct <= 1) {
-      for (const key in productNumbering) {
-        if (Object.hasOwnProperty.call(productNumbering, key)) {
-          productNumbering[key] = 0
-        }
+    // let quantityOfProduct = Number(
+    //   button.parentElement.parentElement
+    //     .querySelector(".text-gray-600")
+    //     .innerText.substring(1)
+    // )
 
-        const productCost = Number(
-          document
-            .querySelector(`.${key}`)
-            .querySelector(".mt-1")
-            .innerText.substring(1)
-        )
+    // quantityOfProduct -= 1
 
-        console.log(productCost)
-
-        totalPriceCalculator(productCost, true)
-
-        cartShower()
-        button.parentElement.parentElement.remove()
-
-        // totalPrice(null, key, productCost, productNumbering)
-      }
-    } else {
-      quantityOfProduct -= 1
-
-      button.parentElement.parentElement.querySelector(
-        ".text-gray-600"
-      ).innerText = `x${quantityOfProduct}`
-
-      for (const [key, value] of Object.entries(productNumbering)) {
-        if (key === productName) {
-          value = quantityOfProduct
-
-          const totalProductCost =
-            button.parentElement.parentElement.querySelector(
-              ".total-product-price"
-            )
-
-          const productPrice = Number(
-            document
-              .querySelector(`.${key}`)
-              .querySelector(".mt-1")
-              .innerText.substring(1)
-          )
-
-          totalProductCost.innerText = `$${productPrice * quantityOfProduct}.00`
-
-          for (const key in productNumbering) {
-            if (Object.hasOwnProperty.call(productNumbering, key)) {
-              if (key === productName) {
-                productNumbering[key] = value
-              }
-            }
-          }
-
-          const productCost = Number(
-            document
-              .querySelector(`.${key}`)
-              .querySelector(".mt-1")
-              .innerText.substring(1)
-          )
-          console.log(productCost)
-          totalPriceCalculator(productCost, true)
-
-          // totalPrice(null, key, productCost, productNumbering)
-        }
-      }
-
-      quantityOfProduct = Number(
-        button.parentElement.parentElement
-          .querySelector(".text-gray-600")
-          .innerText.substring(1)
-      )
-    }
+    // button.parentElement.parentElement.querySelector(
+    //   ".text-gray-600"
+    // ).innerText = `x${quantityOfProduct}`
   }
-}
+  // } else {
+  //   let quantityOfProduct = Number(
+  //     button.parentElement.parentElement
+  //       .querySelector(".text-gray-600")
+  //       .innerText.substring(1)
+  //   )
 
-const productPrices = []
-function totalPriceCalculator(price, removal) {
-  if (!removal) {
-    console.log(price)
+  //   const productName =
+  //     button.parentElement.parentElement.querySelector(".font-medium").innerText
 
-    productPrices.push(price)
-    console.log(productPrices)
-  } else {
-    console.log(productPrices)
-    const notMatchingCosts = productPrices.filter(
-      (productPrice) => productPrice != price
-    )
-    const matchingCosts = productPrices.filter(
-      (productPrice) => productPrice === price
-    )
+  //   if (quantityOfProduct <= 1) {
+  //     for (const key in productNumbering) {
+  //       if (Object.hasOwnProperty.call(productNumbering, key)) {
+  //         productNumbering[key] = 0
+  //       }
 
-    matchingCosts.pop()
+  //       const productCost = Number(
+  //         document
+  //           .querySelector(`.${key}`)
+  //           .querySelector(".mt-1")
+  //           .innerText.substring(1)
+  //       )
 
-    productPrices.length = 0
+  //       console.log("Product price:" + productCost)
 
-    notMatchingCosts.forEach((notMatchingCost) => {
-      productPrices.push(notMatchingCost)
-    })
+  //       totalPriceCalculator(productCost, true)
 
-    matchingCosts.forEach((matchingCost) => {
-      productPrices.push(matchingCost)
-    })
+  //       button.parentElement.parentElement.remove()
 
-    console.log(productPrices)
+  //       cartShower()
+  //     }
+  //   } else {
+  //     quantityOfProduct -= 1
 
-    console.log(productPrices, matchingCosts)
-  }
+  // button.parentElement.parentElement.querySelector(
+  //   ".text-gray-600"
+  // ).innerText = `x${quantityOfProduct}`
+
+  //     for (const [key, value] of Object.entries(productNumbering)) {
+  //       if (key === productName) {
+  //         value = quantityOfProduct
+
+  //         const totalProductCost =
+  //           button.parentElement.parentElement.querySelector(
+  //             ".total-product-price"
+  //           )
+
+  //         const productPrice = Number(
+  //           document
+  //             .querySelector(`.${key}`)
+  //             .querySelector(".mt-1")
+  //             .innerText.substring(1)
+  //         )
+
+  //         totalProductCost.innerText = `$${productPrice * quantityOfProduct}.00`
+
+  //         for (const key in productNumbering) {
+  //           if (Object.hasOwnProperty.call(productNumbering, key)) {
+  //             if (key === productName) {
+  //               productNumbering[key] = value
+  //             }
+  //           }
+  //         }
+
+  //         const productCost = Number(
+  //           document
+  //             .querySelector(`.${key}`)
+  //             .querySelector(".mt-1")
+  //             .innerText.substring(1)
+  //         )
+  //         console.log(productCost)
+  //         totalPriceCalculator(productCost, true)
+  //       }
+  //     }
+
+  //     quantityOfProduct = Number(
+  //       button.parentElement.parentElement
+  //         .querySelector(".text-gray-600")
+  //         .innerText.substring(1)
+  //     )
+  //   }
+  // }
 }
 
 // const productPrices = []
-function totalPrice(productPrice, key, productCost, productNumbering) {
-  if (key != null) {
-    const numberOfProducts = []
+// function totalPriceCalculator(price, removal) {
+//   if (!removal) {
+//     console.log(price)
 
-    for (const [key, value] of Object.entries(productNumbering)) {
-      numberOfProducts.push(value)
+//     productPrices.push(price)
+//     console.log(productPrices)
+//   } else {
+//     console.log(productPrices)
+//     const notMatchingCosts = productPrices.filter(
+//       (productPrice) => productPrice != price
+//     )
+//     const matchingCosts = productPrices.filter(
+//       (productPrice) => productPrice === price
+//     )
 
-      const totalQuantityOfProducts = numberOfProducts.reduce(
-        (sum, product) => sum + product,
-        0
-      )
+//     matchingCosts.pop()
 
-      document.querySelector(".product-number").innerText =
-        totalQuantityOfProducts
-    }
+//     productPrices.length = 0
 
-    const found = productPrices.find(
-      (productPrice) => productPrice === productCost
-    )
+//     notMatchingCosts.forEach((notMatchingCost) => {
+//       productPrices.push(notMatchingCost)
+//     })
 
-    if (found) {
-      productPrices.splice(productPrices.indexOf(found), 1)
-      const totalPrice = productPrices.reduce((total, productsPrice) => {
-        return total + productsPrice
-      }, 0)
+//     matchingCosts.forEach((matchingCost) => {
+//       productPrices.push(matchingCost)
+//     })
+//   }
+// }
 
-      // document.querySelector(".grand-total-price").innerText = "$" + totalPrice
-    } else {
-      console.log("false")
-
-      const totalPrice = productPrices.reduce((total, productsPrice) => {
-        return total + productsPrice
-      }, 0)
-
-      // console.log(productPrices, totalPrice)
-
-      // document.querySelector(".grand-total-price").innerText = "$" + totalPrice
-    }
-  } else {
-    productPrices.push(productPrice)
-    console.log(productPrice + "asd")
-
-    // const totalPrice = productPrices.reduce((total, productsPrice) => {
-    //   return total + productsPrice
-    // }, 0)
-
-    // document.querySelector(".grand-total-price").innerText = "$" + totalPrice
+function quantityOfProductsDeterminer(productNumbering) {
+  let productQuantity = 0
+  for (const [key, value] of Object.entries(productNumbering)) {
+    productQuantity += value
   }
+  document.querySelector(".product-number").innerText = productQuantity
 }
 
 function cartShower() {
