@@ -149,8 +149,19 @@ function cartAdder(product, productNumbering, button) {
     // document.querySelector(".product-number").innerText =
     //   theTotalNumberOfProducts
   } else {
-    console.log("Removal button was clicked")
+    const productName =
+      button.parentElement.parentElement.querySelector(
+        ".text-gray-900"
+      ).innerText
 
+    for (const [key, value] of Object.entries(productNumbering)) {
+      if (key === productName) {
+        value -= 1
+        productNumbering[key] = value
+      }
+    }
+
+    quantityOfProductsDeterminer(productNumbering)
     // console.log(button)
 
     // let quantityOfProduct = Number(
