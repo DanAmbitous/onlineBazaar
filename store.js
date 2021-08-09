@@ -118,6 +118,8 @@ function cartAdder(product, productNumbering, button) {
       }
     }
 
+    totalPriceCalculator(product.price, false)
+
     cartProductList.append(clone)
 
     for (const [key, value] of Object.entries(productNumbering)) {
@@ -130,7 +132,7 @@ function cartAdder(product, productNumbering, button) {
       }
     }
 
-    totalPrice(product.price, null, null, null)
+    // totalPrice(product.price, null, null, null)
 
     const numberOfProducts = []
 
@@ -156,8 +158,6 @@ function cartAdder(product, productNumbering, button) {
       button.parentElement.parentElement.querySelector(".font-medium").innerText
 
     if (quantityOfProduct <= 1) {
-      button.parentElement.parentElement.remove()
-
       for (const key in productNumbering) {
         if (Object.hasOwnProperty.call(productNumbering, key)) {
           productNumbering[key] = 0
@@ -170,11 +170,14 @@ function cartAdder(product, productNumbering, button) {
             .innerText.substring(1)
         )
 
+        console.log(productCost)
+
+        totalPriceCalculator(productCost, true)
+
         cartShower()
+        button.parentElement.parentElement.remove()
 
-        totalPrice(null, key, productCost, productNumbering)
-
-        quantityOfProduct = 0
+        // totalPrice(null, key, productCost, productNumbering)
       }
     } else {
       quantityOfProduct -= 1
@@ -215,8 +218,10 @@ function cartAdder(product, productNumbering, button) {
               .querySelector(".mt-1")
               .innerText.substring(1)
           )
+          console.log(productCost)
+          totalPriceCalculator(productCost, true)
 
-          totalPrice(null, key, productCost, productNumbering)
+          // totalPrice(null, key, productCost, productNumbering)
         }
       }
 
@@ -225,13 +230,45 @@ function cartAdder(product, productNumbering, button) {
           .querySelector(".text-gray-600")
           .innerText.substring(1)
       )
-
-      console.log(productNumbering)
     }
   }
 }
 
 const productPrices = []
+function totalPriceCalculator(price, removal) {
+  if (!removal) {
+    console.log(price)
+
+    productPrices.push(price)
+    console.log(productPrices)
+  } else {
+    console.log(productPrices)
+    const notMatchingCosts = productPrices.filter(
+      (productPrice) => productPrice != price
+    )
+    const matchingCosts = productPrices.filter(
+      (productPrice) => productPrice === price
+    )
+
+    matchingCosts.pop()
+
+    productPrices.length = 0
+
+    notMatchingCosts.forEach((notMatchingCost) => {
+      productPrices.push(notMatchingCost)
+    })
+
+    matchingCosts.forEach((matchingCost) => {
+      productPrices.push(matchingCost)
+    })
+
+    console.log(productPrices)
+
+    console.log(productPrices, matchingCosts)
+  }
+}
+
+// const productPrices = []
 function totalPrice(productPrice, key, productCost, productNumbering) {
   if (key != null) {
     const numberOfProducts = []
@@ -248,29 +285,37 @@ function totalPrice(productPrice, key, productCost, productNumbering) {
         totalQuantityOfProducts
     }
 
-    console.log(productCost)
-
     const found = productPrices.find(
       (productPrice) => productPrice === productCost
     )
 
-    productPrices.splice(productPrices.indexOf(found), 1)
+    if (found) {
+      productPrices.splice(productPrices.indexOf(found), 1)
+      const totalPrice = productPrices.reduce((total, productsPrice) => {
+        return total + productsPrice
+      }, 0)
 
-    const totalPrice = productPrices.reduce((total, productsPrice) => {
-      return total + productsPrice
-    }, 0)
+      // document.querySelector(".grand-total-price").innerText = "$" + totalPrice
+    } else {
+      console.log("false")
 
-    document.querySelector(".grand-total-price").innerText = "$" + totalPrice
+      const totalPrice = productPrices.reduce((total, productsPrice) => {
+        return total + productsPrice
+      }, 0)
+
+      // console.log(productPrices, totalPrice)
+
+      // document.querySelector(".grand-total-price").innerText = "$" + totalPrice
+    }
   } else {
     productPrices.push(productPrice)
+    console.log(productPrice + "asd")
 
-    const totalPrice = productPrices.reduce((total, productsPrice) => {
-      return total + productsPrice
-    }, 0)
+    // const totalPrice = productPrices.reduce((total, productsPrice) => {
+    //   return total + productsPrice
+    // }, 0)
 
-    document.querySelector(".grand-total-price").innerText = "$" + totalPrice
-
-    console.log(productPrices)
+    // document.querySelector(".grand-total-price").innerText = "$" + totalPrice
   }
 }
 
@@ -290,49 +335,3 @@ function cartShower() {
 cartButton.addEventListener("click", (e) => {
   cartShower()
 })
-
-// cartProductList.addEventListener("click", (e) => {
-//   let quantityOfTheProduct = Number(
-//     e.target.parentElement.parentElement
-//       .querySelector(".text-gray-600")
-//       .innerText.substring(1)
-//   )
-
-//   if (quantityOfTheProduct === 1) {
-//     console.log("hi")
-//   } else {
-//     quantityOfTheProduct -= 1
-
-//     e.target.parentElement.parentElement.querySelector(
-//       ".text-gray-600"
-//     ).innerText = `x${quantityOfTheProduct}`
-//   }
-
-// if (e.target.classList.contains("absolute")) {
-//   let quantity =
-//     e.target.parentElement.parentElement.querySelector(
-//       ".text-gray-600"
-//     ).innerText
-//   quantity = Number(quantity.replace(/\D+/g, ""))
-//   if (quantity <= 1) {
-//     e.target.parentElement.parentElement.remove()
-//     cartShower()
-//   } else {
-//     quantity -= 1
-//     e.target.parentElement.parentElement.querySelector(
-//       ".text-gray-600"
-//     ).innerText = `x${quantity}`
-//     const products = document.querySelectorAll(".cart-item")
-//     products.forEach((product) => {
-//       const quantityRaw = product.querySelector(".text-gray-600").innerText
-//       const quantityNumber = Number(quantityRaw.replace(/\D+/g, ""))
-//       productNumbering[`${product.querySelector(".mt-2").innerText}`] =
-//         quantityNumber
-//     })
-//     productColor.forEach((product) => {
-//       productNumbering[`${product}`] = 0
-//     })
-//   }
-//   console.log(productNumbering)
-// }
-// })
