@@ -135,7 +135,7 @@ function cartAdder(product, productNumbering, button) {
       }
     }
     quantityOfProductsDeterminer(productNumbering)
-    grandTotalPriceDeterminer()
+    grandTotalPriceDeterminer(null)
 
     // anEnumerationOfProducts.length = 0
     // const totalQuantityOfProducts = document.body.querySelectorAll(".quantity")
@@ -178,7 +178,7 @@ function cartAdder(product, productNumbering, button) {
         productNumbering[key] = value
       }
     }
-    grandTotalPriceDeterminer()
+    grandTotalPriceDeterminer(button)
 
     quantityOfProductsDeterminer(productNumbering, button)
 
@@ -311,7 +311,18 @@ function cartAdder(product, productNumbering, button) {
 // }
 
 let prices = []
-function grandTotalPriceDeterminer() {
+function grandTotalPriceDeterminer(button) {
+  if (button != null) {
+    if (
+      Number(
+        button.parentElement.parentElement
+          .querySelector(".quantity")
+          .innerText.substring(1)
+      ) < 1
+    ) {
+      button.parentElement.parentElement.remove()
+    }
+  }
   const allPrices = cartProductList.querySelectorAll(".total-product-price")
   prices = []
 
