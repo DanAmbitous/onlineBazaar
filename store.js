@@ -24,7 +24,7 @@ document.addEventListener("click", (e) => {
   if (e.target.classList.contains("add-to-cart-button")) {
     productPacker(e.target)
   } else if (e.target.classList.contains("remove-product")) {
-    productPacker(e.target)
+    productPacker(e.target, e)
   }
 })
 
@@ -48,7 +48,7 @@ productColor.forEach((product) => {
   productNumbering[`${product}`] = 0
 })
 
-function productPacker(button) {
+function productPacker(button, event) {
   if (button.classList.contains("add-to-cart-button")) {
     const productContainer = button.closest(".w-full")
     const product = {}
@@ -75,12 +75,12 @@ function productPacker(button) {
 
     cartAdder(product, productNumbering, null)
   } else {
-    cartAdder(null, productNumbering, button)
+    cartAdder(null, productNumbering, button, event)
   }
 }
 
 // const anEnumerationOfProducts = []
-function cartAdder(product, productNumbering, button) {
+function cartAdder(product, productNumbering, button, event) {
   if (product != null) {
     const template = document.getElementsByTagName("template")[0]
     const clone = template.content.cloneNode(true)
@@ -149,38 +149,57 @@ function cartAdder(product, productNumbering, button) {
     // document.querySelector(".product-number").innerText =
     //   theTotalNumberOfProducts
   } else {
-    const productName =
-      button.parentElement.parentElement.querySelector(
-        ".text-gray-900"
-      ).innerText
-
-    const productQuantity =
-      button.parentElement.parentElement.querySelector(".quantity")
-
-    for (const [key, value] of Object.entries(productNumbering)) {
-      if (key === productName) {
-        value -= 1
-        productQuantity.innerText = `x${value}`
-
+    if (!event.shiftKey) {
+      const productName =
         button.parentElement.parentElement.querySelector(
-          ".total-product-price"
-        ).innerText =
-          "$" +
-          Number(
-            document
-              .querySelector(`.${key}`)
-              .querySelector(".mt-1")
-              .innerText.substring(1)
-          ) *
-            Number(productQuantity.innerText.substring(1)) +
-          ".00"
+          ".text-gray-900"
+        ).innerText
 
-        productNumbering[key] = value
+      const productQuantity =
+        button.parentElement.parentElement.querySelector(".quantity")
+
+      for (const [key, value] of Object.entries(productNumbering)) {
+        if (key === productName) {
+          value -= 1
+          productQuantity.innerText = `x${value}`
+
+          button.parentElement.parentElement.querySelector(
+            ".total-product-price"
+          ).innerText =
+            "$" +
+            Number(
+              document
+                .querySelector(`.${key}`)
+                .querySelector(".mt-1")
+                .innerText.substring(1)
+            ) *
+              Number(productQuantity.innerText.substring(1)) +
+            ".00"
+
+          productNumbering[key] = value
+        }
       }
-    }
-    quantityOfProductsDeterminer(productNumbering, button)
+      quantityOfProductsDeterminer(productNumbering, button)
 
-    grandTotalPriceDeterminer(button)
+      grandTotalPriceDeterminer(button)
+    } else {
+      const productName =
+        button.parentElement.parentElement.querySelector(
+          ".text-gray-900"
+        ).innerText
+
+      for (const [key, value] of Object.entries(productNumbering)) {
+        if (key === productName) {
+          value = 0
+
+          productNumbering[key] = value
+        }
+      }
+
+      quantityOfProductsDeterminer(productNumbering, button)
+
+      grandTotalPriceDeterminer(button)
+    }
 
     // console.log(button)
 
