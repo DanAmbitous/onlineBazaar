@@ -122,8 +122,6 @@ function cartAdder(product, productNumbering, button) {
       }
     }
 
-    quantityOfProductsDeterminer(productNumbering)
-
     cartProductList.append(clone)
 
     //Remove previous of the same products so only one element would represent it
@@ -136,6 +134,8 @@ function cartAdder(product, productNumbering, button) {
         })
       }
     }
+    quantityOfProductsDeterminer(productNumbering)
+    grandTotalPriceDeterminer()
 
     // anEnumerationOfProducts.length = 0
     // const totalQuantityOfProducts = document.body.querySelectorAll(".quantity")
@@ -278,6 +278,19 @@ function cartAdder(product, productNumbering, button) {
 //     })
 //   }
 // }
+
+let prices = []
+function grandTotalPriceDeterminer() {
+  const allPrices = cartProductList.querySelectorAll(".total-product-price")
+  prices = []
+
+  allPrices.forEach((price) => {
+    prices.push(Number(price.innerText.substring(1)))
+  })
+
+  const totalPrice = prices.reduce((sum, value) => (sum += value))
+  document.querySelector(".grand-total-price").innerText = `$${totalPrice}.00`
+}
 
 function quantityOfProductsDeterminer(productNumbering) {
   let productQuantity = 0
