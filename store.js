@@ -178,9 +178,9 @@ function cartAdder(product, productNumbering, button) {
         productNumbering[key] = value
       }
     }
-    grandTotalPriceDeterminer(button)
-
     quantityOfProductsDeterminer(productNumbering, button)
+
+    grandTotalPriceDeterminer(button)
 
     // console.log(button)
 
