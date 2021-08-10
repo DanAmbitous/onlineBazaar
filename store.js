@@ -196,6 +196,8 @@ function cartAdder(product, productNumbering, button, event) {
 
       quantityOfProductsDeterminer(productNumbering, button)
       grandTotalPriceDeterminer(button)
+
+      storeTheListOfProducts()
     } else if (event.target.id === "remove-all-products") {
       for (const [key, value] of Object.entries(productNumbering)) {
         productNumbering[key] = 0
@@ -204,6 +206,8 @@ function cartAdder(product, productNumbering, button, event) {
       quantityOfProductsDeterminer(productNumbering, button)
 
       grandTotalPriceDeterminer(null)
+
+      storeTheListOfProducts()
     } else {
       const productName =
         button.parentElement.parentElement.querySelector(
@@ -229,6 +233,8 @@ function cartAdder(product, productNumbering, button, event) {
       quantityOfProductsDeterminer(productNumbering, button)
 
       grandTotalPriceDeterminer(button)
+
+      storeTheListOfProducts()
     }
 
     // console.log(button)
