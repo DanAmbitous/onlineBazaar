@@ -187,8 +187,12 @@ function cartAdder(product, productNumbering, button, event) {
       grandTotalPriceDeterminer(button)
     } else if (event.target.id === "remove-all-products") {
       for (const [key, value] of Object.entries(productNumbering)) {
-        console.log(key, value)
+        productNumbering[key] = 0
       }
+
+      quantityOfProductsDeterminer(productNumbering, button)
+
+      grandTotalPriceDeterminer(null)
     } else {
       const productName =
         button.parentElement.parentElement.querySelector(
@@ -203,9 +207,11 @@ function cartAdder(product, productNumbering, button, event) {
         }
       }
 
-      quantityOfProductsDeterminer(productNumbering, button)
+      console.log("HI")
 
-      grandTotalPriceDeterminer(button)
+      // quantityOfProductsDeterminer(productNumbering, button)
+
+      // grandTotalPriceDeterminer(button)
     }
 
     // console.log(button)
@@ -361,18 +367,27 @@ function grandTotalPriceDeterminer(button) {
 }
 
 function quantityOfProductsDeterminer(productNumbering, button) {
-  let productQuantity = 0
-  for (const [key, value] of Object.entries(productNumbering)) {
-    productQuantity += value
-  }
+  if (!button != null) {
+    let productQuantity = 0
+    for (const [key, value] of Object.entries(productNumbering)) {
+      productQuantity += value
+    }
 
-  if (productQuantity === 0) {
-    document.querySelector(".product-number").innerText = productQuantity
-    button.parentElement.parentElement.remove()
-
-    cartShower()
+    if (productQuantity === 0) {
+      document.querySelector(".product-number").innerText = productQuantity
+      if (
+        !button.parentElement.parentElement.classList.contains("list-container")
+      ) {
+        button.parentElement.parentElement.remove()
+        cartShower()
+      } else {
+        cartShower()
+      }
+    } else {
+      document.querySelector(".product-number").innerText = productQuantity
+    }
   } else {
-    document.querySelector(".product-number").innerText = productQuantity
+    console.log("hi")
   }
 }
 
@@ -383,7 +398,10 @@ function cartShower() {
   ) {
     cartButton.dataset.status = "hide"
     document.querySelector(".list-container").style.display = "none"
-  } else if (cartButton.dataset.status === "hide") {
+  } else if (
+    cartButton.dataset.status === "hide" &&
+    cartProductList.children.length > 1
+  ) {
     cartButton.dataset.status = "show"
     document.querySelector(".list-container").style.display = "block"
   }
