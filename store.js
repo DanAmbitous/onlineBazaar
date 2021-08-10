@@ -140,21 +140,7 @@ function cartAdder(product, productNumbering, button, event) {
     quantityOfProductsDeterminer(productNumbering)
     grandTotalPriceDeterminer(null)
 
-    // anEnumerationOfProducts.length = 0
-    // const totalQuantityOfProducts = document.body.querySelectorAll(".quantity")
-    // totalQuantityOfProducts.forEach(() => {
-    //   anEnumerationOfProducts.push(1)
-    // })
-    // const theTotalNumberOfProducts = anEnumerationOfProducts.reduce(
-    //   (sum, value) => (sum += value),
-    //   0
-    // )
-    // document.querySelector(".product-number").innerText =
-    //   theTotalNumberOfProducts
-
     sessionStorage.setItem(product.name, JSON.stringify(product))
-
-    // storeTheListOfProducts(product)
   } else {
     if (!event.shiftKey && event.target.id !== "remove-all-products") {
       let productName =

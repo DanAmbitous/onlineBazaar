@@ -52,9 +52,10 @@
   </section>
   <section>
     <div class="mb-4 top-0 right-0 mr-4 mt-20 fixed">
-      <div style="max-height: calc(100vh - 6rem);" class="bg-white text-gray-700 body-font shadow-lg border rounded-lg flex flex-col">
-        <div class="overflow-y-auto px-4 pt-4">
-          <div class="mb-6">
+      <div style="max-height: calc(100vh - 6rem);" class="list-container bg-white text-gray-700 body-font shadow-lg border rounded-lg flex flex-col">
+        <div id="cart-product-list-container"class="overflow-y-auto px-4 pt-4">
+          <button id="remove-all-products">Remove all</button>
+          <!-- <div class="mb-6">
             <div class="block relative h-24 rounded overflow-hidden">
               <img alt="ecommerce" class="object-cover object-center w-full h-full block rounded" src="https://dummyimage.com/210x130/F00/F00">
               <button data-remove-from-cart-button class="absolute top-0 right-0 bg-black rounded-tr text-white w-6 h-6 text-lg flex justify-center items-center">&times;</button>
@@ -82,11 +83,11 @@
               </div>
               <div>$12.00</div>
             </div>
-          </div>
+          </div> -->
         </div>
         <div class="flex justify-between items-end border-t p-4">
           <span class="font-bold text-lg uppercase">Total</span>
-          <span class="font-bold">$44.00</span>
+          <span class="grand-total-price font-bold"></span>
         </div>
       </div>
     </div>
@@ -115,5 +116,35 @@
       </div>
     </div>
   </template>
+
+  <style>
+    .list-container {
+      overflow:scroll;
+    }
+
+    #cart-product-list-container {
+      max-height: 70vw;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    #remove-all-products {
+      font-weight: 900;
+      color: white;
+      border-radius: 1vw;
+      margin-bottom: 1vw;
+      background-color: red;
+      outline: none;
+    }
+    
+    #remove-all-products:hover {
+      background-color: rgb(155, 0, 0);
+    }
+
+    #remove-all-products:active {
+      background-color: rgb(139, 0, 0);
+    }
+
+  </style>
 </body>
 </html>
