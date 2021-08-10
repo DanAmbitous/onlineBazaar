@@ -151,6 +151,8 @@ function cartAdder(product, productNumbering, button, event) {
     // )
     // document.querySelector(".product-number").innerText =
     //   theTotalNumberOfProducts
+
+    storeTheListOfProducts()
   } else {
     if (!event.shiftKey && event.target.id !== "remove-all-products") {
       let productName =
@@ -356,6 +358,14 @@ function cartAdder(product, productNumbering, button, event) {
 //     })
 //   }
 // }
+
+function storeTheListOfProducts() {
+  const products = document.querySelectorAll(".cart-item")
+
+  products.forEach((product) => {
+    console.log(product)
+  })
+}
 
 let prices = []
 function grandTotalPriceDeterminer(button) {
