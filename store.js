@@ -345,14 +345,22 @@ function cartAdder(product, productNumbering, button, event) {
 let prices = []
 function grandTotalPriceDeterminer(button) {
   if (button != null) {
-    if (
-      Number(
-        button.parentElement.parentElement
-          .querySelector(".quantity")
-          .innerText.substring(1)
-      ) < 1
-    ) {
-      button.parentElement.parentElement.remove()
+    if (!button.id === "remove-all-products") {
+      if (
+        Number(
+          button.parentElement.parentElement
+            .querySelector(".quantity")
+            .innerText.substring(1)
+        ) < 1
+      ) {
+        button.parentElement.parentElement.remove()
+      }
+    } else if (button.id === "remove-all-products") {
+      const listProducts = cartProductList.querySelectorAll(".cart-item")
+
+      listProducts.forEach((product) => {
+        product.remove()
+      })
     }
   }
   const allPrices = cartProductList.querySelectorAll(".total-product-price")
@@ -381,6 +389,9 @@ function quantityOfProductsDeterminer(productNumbering, button) {
         button.parentElement.parentElement.remove()
         cartShower()
       } else {
+        console.log(productNumbering)
+        console.log(button)
+        grandTotalPriceDeterminer(button)
         cartShower()
       }
     } else {
