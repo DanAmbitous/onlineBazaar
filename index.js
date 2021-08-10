@@ -27,11 +27,11 @@ console.log(products)
 addProductsToTheCart()
 
 function addProductsToTheCart() {
-  const template = document.getElementsByTagName("template")[0]
-  const element = template.content.cloneNode(true)
-
   products.forEach((product) => {
+    const template = document.getElementsByTagName("template")[0]
+    const element = template.content.cloneNode(true)
     element.querySelector(".product-name-color").innerText = product.name
+    element.querySelector(".quantity").innerText = `x${product.quantity}`
     element.querySelector(".object-cover").src = product.image
     element.querySelector(".product-name-color").innerText = product.name
 
