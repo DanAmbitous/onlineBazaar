@@ -124,7 +124,7 @@ function cartAdder(product, productNumbering, button, event) {
         }
       }
     }
-
+    console.log(product)
     cartProductList.append(clone)
 
     //Remove previous of the same products so only one element would represent it
@@ -152,7 +152,7 @@ function cartAdder(product, productNumbering, button, event) {
     // document.querySelector(".product-number").innerText =
     //   theTotalNumberOfProducts
 
-    storeTheListOfProducts()
+    storeTheListOfProducts(product)
   } else {
     if (!event.shiftKey && event.target.id !== "remove-all-products") {
       let productName =
@@ -213,7 +213,6 @@ function cartAdder(product, productNumbering, button, event) {
         button.parentElement.parentElement.querySelector(
           ".text-gray-900"
         ).innerText
-      console.log(productName)
       if (productName === "Light Gray") {
         productName = "LightGray"
       } else if (productName === "Dark Gray") {
@@ -227,8 +226,6 @@ function cartAdder(product, productNumbering, button, event) {
           productNumbering[key] = value
         }
       }
-
-      console.log("HI")
 
       quantityOfProductsDeterminer(productNumbering, button)
 
@@ -365,11 +362,14 @@ function cartAdder(product, productNumbering, button, event) {
 //   }
 // }
 
-function storeTheListOfProducts() {
+function storeTheListOfProducts(product) {
   const products = document.querySelectorAll(".cart-item")
-
-  products.forEach((product) => {
-    console.log(product)
+  console.log("hi")
+  products.forEach((theProduct) => {
+    sessionStorage.setItem(
+      theProduct.querySelector(".product-name-color").innerText,
+      JSON.stringify(product)
+    )
   })
 }
 
@@ -420,8 +420,6 @@ function quantityOfProductsDeterminer(productNumbering, button) {
         button.parentElement.parentElement.remove()
         cartShower()
       } else {
-        console.log(productNumbering)
-        console.log(button)
         grandTotalPriceDeterminer(button)
         cartShower()
       }
