@@ -169,6 +169,9 @@ function cartAdder(product, productNumbering, button, event) {
 
       for (const [key, value] of Object.entries(productNumbering)) {
         if (key === productName) {
+          if (Number(productQuantity.innerText.substring(1)) === 1) {
+            button.parentElement.parentElement.remove()
+          }
           value -= 1
           productQuantity.innerText = `x${value}`
 
@@ -200,11 +203,11 @@ function cartAdder(product, productNumbering, button, event) {
 
       grandTotalPriceDeterminer(null)
     } else {
-      let productName =
+      const productName =
         button.parentElement.parentElement.querySelector(
           ".text-gray-900"
         ).innerText
-
+      console.log(productName)
       if (productName === "Light Gray") {
         productName = "LightGray"
       } else if (productName === "Dark Gray") {
@@ -221,9 +224,9 @@ function cartAdder(product, productNumbering, button, event) {
 
       console.log("HI")
 
-      // quantityOfProductsDeterminer(productNumbering, button)
+      quantityOfProductsDeterminer(productNumbering, button)
 
-      // grandTotalPriceDeterminer(button)
+      grandTotalPriceDeterminer(button)
     }
 
     // console.log(button)
