@@ -153,10 +153,16 @@ function cartAdder(product, productNumbering, button, event) {
     //   theTotalNumberOfProducts
   } else {
     if (!event.shiftKey && event.target.id !== "remove-all-products") {
-      const productName =
+      let productName =
         button.parentElement.parentElement.querySelector(
           ".text-gray-900"
         ).innerText
+
+      if (productName === "Light Gray") {
+        productName = "LightGray"
+      } else if (productName === "Dark Gray") {
+        productName = "DarkGray"
+      }
 
       const productQuantity =
         button.parentElement.parentElement.querySelector(".quantity")
@@ -194,10 +200,16 @@ function cartAdder(product, productNumbering, button, event) {
 
       grandTotalPriceDeterminer(null)
     } else {
-      const productName =
+      let productName =
         button.parentElement.parentElement.querySelector(
           ".text-gray-900"
         ).innerText
+
+      if (productName === "Light Gray") {
+        productName = "LightGray"
+      } else if (productName === "Dark Gray") {
+        productName = "DarkGray"
+      }
 
       for (const [key, value] of Object.entries(productNumbering)) {
         if (key === productName) {
