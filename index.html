@@ -97,5 +97,23 @@
       <div class="bg-red-500 rounded-full text-xs absolute w-6 h-6 flex justify-center items-center right-0 bottom-0 transform translate-x-2 translate-y-2">2</div>
     </button>
   </section>
+
+  <template>
+    <div class="cart-item mb-6">
+      <div class="block relative h-24 rounded overflow-hidden">
+        <img alt="ecommerce" class="object-cover object-center w-full h-full block rounded" src="">
+        <button data-remove-from-cart-button class="absolute top-0 right-0 bg-black rounded-tr text-white w-6 h-6 text-lg flex justify-center items-center remove-product">&times;</button>
+      </div>
+      <div class="mt-2 flex justify-between">
+        <div class="flex items-center title-font">
+          <h2 class="product-name-color text-gray-900 text-lg font-medium">
+            
+          </h2>
+          <span class="quantity text-gray-600 text-sm font-bold ml-1">x1</span>
+        </div>
+        <div class="total-product-price"></div>
+      </div>
+    </div>
+  </template>
 </body>
 </html>

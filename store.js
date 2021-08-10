@@ -152,7 +152,9 @@ function cartAdder(product, productNumbering, button, event) {
     // document.querySelector(".product-number").innerText =
     //   theTotalNumberOfProducts
 
-    storeTheListOfProducts(product)
+    sessionStorage.setItem(product.name, JSON.stringify(product))
+
+    // storeTheListOfProducts(product)
   } else {
     if (!event.shiftKey && event.target.id !== "remove-all-products") {
       let productName =
@@ -364,7 +366,6 @@ function cartAdder(product, productNumbering, button, event) {
 
 function storeTheListOfProducts(product) {
   const products = document.querySelectorAll(".cart-item")
-  console.log("hi")
   products.forEach((theProduct) => {
     sessionStorage.setItem(
       theProduct.querySelector(".product-name-color").innerText,
