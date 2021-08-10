@@ -140,6 +140,17 @@ function cartAdder(product, productNumbering, button, event) {
     quantityOfProductsDeterminer(productNumbering)
     grandTotalPriceDeterminer(null)
 
+    product.totalPrice = cartProductList
+      .querySelector(`.${product.name}`)
+      .querySelector(".total-product-price").innerText
+
+    product.basePrice = Number(
+      document
+        .querySelector(`.${product.name}`)
+        .querySelector(".mt-1")
+        .innerText.substring(1)
+    )
+
     sessionStorage.setItem(product.name, JSON.stringify(product))
   } else {
     if (!event.shiftKey && event.target.id !== "remove-all-products") {

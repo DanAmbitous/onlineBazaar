@@ -24,17 +24,39 @@ productColor.forEach((productColor) => {
 
 console.log(products)
 
-addProductsToTheCart()
-
 function addProductsToTheCart() {
   products.forEach((product) => {
-    const template = document.getElementsByTagName("template")[0]
-    const element = template.content.cloneNode(true)
-    element.querySelector(".product-name-color").innerText = product.name
-    element.querySelector(".quantity").innerText = `x${product.quantity}`
-    element.querySelector(".object-cover").src = product.image
-    element.querySelector(".product-name-color").innerText = product.name
+    if (product != null) {
+      const template = document.getElementsByTagName("template")[0]
+      const element = template.content.cloneNode(true)
+      element.querySelector(".product-name-color").innerText = product.name
+      element.querySelector(".quantity").innerText = `x${product.quantity}`
+      element.querySelector(".object-cover").src = product.image
+      element.querySelector(".product-name-color").innerText = product.name
+      element.querySelector(".total-product-price").innerText =
+        product.totalPrice
+      element.querySelector(
+        ".base-price"
+      ).innerText = `$${product.basePrice}.00`
 
-    cartProductList.append(element)
+      cartProductList.append(element)
+    }
   })
 }
+
+addProductsToTheCart()
+
+cartProductList.addEventListener("click", (e) => {
+  if (e.target.classList.contains("absolute")) {
+    let quantity = Number(
+      e.target.parentElement.parentElement
+        .querySelector(".quantity")
+        .innerText.substring(1)
+    )
+    quantity -= 1
+
+    e.target.parentElement.parentElement.querySelector(
+      ".quantity"
+    ).innerText = `x${quantity}`
+  }
+})
