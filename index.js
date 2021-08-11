@@ -1,5 +1,7 @@
 const cartProductList = document.querySelector("#cart-product-list-container")
-
+const productContainer = document.querySelector(".list-container")
+const cartButton = document.querySelector("#cart-button")
+console.log(cartButton)
 const productColor = [
   "Red",
   "Yellow",
@@ -55,8 +57,53 @@ cartProductList.addEventListener("click", (e) => {
     )
     quantity -= 1
 
+    recalculateProduct(quantity, e)
+
     e.target.parentElement.parentElement.querySelector(
       ".quantity"
     ).innerText = `x${quantity}`
   }
+})
+
+document.addEventListener("click", (e) => {
+  if (e.target.classList.contains("mr-5")) {
+    const products = cartProductList.querySelector("cart-item")
+  }
+})
+
+function recalculateProduct(quantity, e) {
+  if (quantity != 0) {
+    let productPrice = Number(
+      e.target.parentElement.parentElement
+        .querySelector(".base-price")
+        .innerText.substring(1)
+    )
+
+    e.target.parentElement.parentElement.querySelector(
+      ".total-product-price"
+    ).innerText = `$${productPrice * quantity}.00`
+  } else {
+    e.target.parentElement.parentElement.remove()
+  }
+}
+
+function cartShower() {
+  console.log(cartProductList.children.length)
+  if (
+    cartProductList.children.length - 1 === 0 ||
+    cartButton.dataset.status === "show"
+  ) {
+    cartButton.dataset.status = "hide"
+    document.querySelector(".list-container").style.display = "none"
+  } else if (
+    cartButton.dataset.status === "hide" &&
+    cartProductList.children.length > 1
+  ) {
+    cartButton.dataset.status = "show"
+    document.querySelector(".list-container").style.display = "block"
+  }
+}
+
+cartButton.addEventListener("click", (e) => {
+  cartShower()
 })
