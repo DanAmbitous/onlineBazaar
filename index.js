@@ -1,7 +1,7 @@
 const cartProductList = document.querySelector("#cart-product-list-container")
 const productContainer = document.querySelector(".list-container")
 const cartButton = document.querySelector("#cart-button")
-console.log(cartButton)
+
 const productColor = [
   "Red",
   "Yellow",
@@ -50,47 +50,89 @@ addProductsToTheCart()
 
 cartProductList.addEventListener("click", (e) => {
   if (e.target.classList.contains("absolute")) {
-    let quantity = Number(
-      e.target.parentElement.parentElement
-        .querySelector(".quantity")
-        .innerText.substring(1)
-    )
-    quantity -= 1
-
-    recalculateProduct(quantity, e)
-
-    e.target.parentElement.parentElement.querySelector(
-      ".quantity"
-    ).innerText = `x${quantity}`
+    recalculateProduct(e)
   }
 })
 
-document.addEventListener("click", (e) => {
-  if (e.target.classList.contains("mr-5")) {
-    const products = cartProductList.querySelector("cart-item")
-  }
-})
+function recalculateProduct(e) {
+  let quantity = Number(
+    e.target.parentElement.parentElement
+      .querySelector(".quantity")
+      .innerText.substring(1)
+  )
 
-function recalculateProduct(quantity, e) {
-  if (quantity != 0) {
-    let productPrice = Number(
-      e.target.parentElement.parentElement
-        .querySelector(".base-price")
-        .innerText.substring(1)
-    )
+  quantity -= 1
 
-    e.target.parentElement.parentElement.querySelector(
-      ".total-product-price"
-    ).innerText = `$${productPrice * quantity}.00`
-  } else {
+  e.target.parentElement.parentElement.querySelector(
+    ".quantity"
+  ).innerText = `x${quantity}`
+
+  sessionStorage.removeItem(
+    e.target.parentElement.parentElement.querySelector(".product-name-color")
+      .innerText
+  )
+
+  let productPrice = Number(
+    e.target.parentElement.parentElement
+      .querySelector(".base-price")
+      .innerText.substring(1)
+  )
+
+  e.target.parentElement.parentElement.querySelector(
+    ".total-product-price"
+  ).innerText = `$${productPrice * quantity}.00`
+
+  const updatedProduct = {}
+  updatedProduct.basePrice = Number(
+    e.target.parentElement.parentElement
+      .querySelector(".base-price")
+      .innerText.substring(1)
+  )
+  updatedProduct.image =
+    e.target.parentElement.parentElement.querySelector("img").src
+  updatedProduct.name = e.target.parentElement.parentElement.querySelector(
+    ".product-name-color"
+  ).innerText
+  updatedProduct.quantity = Number(
+    e.target.parentElement.parentElement
+      .querySelector(".quantity")
+      .innerText.substring(1)
+  )
+  updatedProduct.totalProductPrice = Number(
+    e.target.parentElement.parentElement
+      .querySelector(".total-product-price")
+      .innerText.substring(1)
+  )
+
+  sessionStorage.setItem(
+    e.target.parentElement.parentElement.querySelector(".product-name-color")
+      .innerText,
+    JSON.stringify(updatedProduct)
+  )
+
+  if (quantity === 0) {
+    console.log("asd")
+
     e.target.parentElement.parentElement.remove()
+
+    sessionStorage.removeItem(
+      e.target.parentElement.parentElement.querySelector(".product-name-color")
+        .innerText
+    )
+  }
+
+  cartViewController()
+}
+
+function cartViewController() {
+  if (cartProductList.querySelectorAll(".cart-item").length === 0) {
+    document.querySelector(".list-container").style.display = "none"
   }
 }
 
 function cartShower() {
-  console.log(cartProductList.children.length)
   if (
-    cartProductList.children.length - 1 === 0 ||
+    cartProductList.querySelectorAll(".cart-item").length === 0 ||
     cartButton.dataset.status === "show"
   ) {
     cartButton.dataset.status = "hide"
