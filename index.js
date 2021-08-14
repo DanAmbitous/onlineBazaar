@@ -146,6 +146,8 @@ function cartShower() {
   }
 }
 
+cartShower()
+
 cartButton.addEventListener("click", (e) => {
   cartShower()
 })

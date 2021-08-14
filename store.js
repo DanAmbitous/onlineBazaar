@@ -51,6 +51,66 @@ productColor.forEach((product) => {
   productNumbering[`${product}`] = 0
 })
 
+// productColor.forEach((color) => {
+//   console.log(color)
+//   const product = sessionStorage.getItem(color)
+//   console.log(product)
+//   if (product != null) {
+//     console.log(sessionStorage.getItem(product))
+
+//     const template = document.getElementsByTagName("template")[0]
+//     const clone = template.content.cloneNode(true)
+//     clone.querySelector("img").src = product.image
+//     if (product.name === "LightGray") {
+//       clone.querySelector("h2").innerText = "Light Gray"
+//     } else if (product.name === "DarkGray") {
+//       clone.querySelector("h2").innerText = "Dark Gray"
+//     } else {
+//       clone.querySelector("h2").innerText = product.name
+//     }
+
+//     //Price and quantity of the selected product (Individually)
+//     clone.querySelector("span").innerHTML = "x" + product.quantity
+//     clone.querySelector(".total-product-price").innerText =
+//       "$" + product.price + ".00"
+
+//     //To convert the spaced names into a more versitle version of themselves
+//     if (product.name === "Light Gray") {
+//       product.name = "LightGray"
+//       clone.querySelector(".cart-item").classList.add(product.name)
+//     } else if (product.name === "Dark Gray") {
+//       product.name = "DarkGray"
+//       clone.querySelector(".cart-item").classList.add(product.name)
+//     } else {
+//       clone.querySelector(".cart-item").classList.add(product.name)
+//     }
+
+//     //To determine the total price of the particular set of items
+//     for (const [key, value] of Object.entries(productNumbering)) {
+//       if (value > 1) {
+//         const productName = cartProductList.querySelector(".text-gray-900")
+
+//         if (productName.innerText === key) {
+//           clone.querySelector("span").innerHTML = "x" + product.quantity
+//           clone.querySelector(".total-product-price").innerText =
+//             "$" + product.price * product.quantity + ".00"
+//         }
+//       }
+//     }
+
+//     console.log(product)
+//     cartProductList.append(clone)
+//   }
+// })
+
+productColor.forEach((color) => {
+  let data = sessionStorage.getItem(color)
+
+  if (data != null) {
+    console.log(data)
+  }
+})
+
 function productPacker(button, event) {
   if (button.classList.contains("add-to-cart-button")) {
     const productContainer = button.closest(".w-full")
@@ -467,6 +527,17 @@ function quantityOfProductsDeterminer(productNumbering, button) {
   }
 }
 
+function productListShower() {
+  let products = cartProductList.querySelectorAll(".cart-product")
+
+  if (products.length === 0) {
+    console.log("hide")
+    document.querySelector(".list-container").style.display = "none"
+  }
+}
+
+productListShower()
+
 function cartShower() {
   if (
     cartProductList.children.length === 0 ||
@@ -486,3 +557,47 @@ function cartShower() {
 cartButton.addEventListener("click", (e) => {
   cartShower()
 })
+
+// function appendToTheList(params) {
+//   const template = document.getElementsByTagName("template")[0]
+//     const clone = template.content.cloneNode(true)
+//     clone.querySelector("img").src = product.image
+//     if (product.name === "LightGray") {
+//       clone.querySelector("h2").innerText = "Light Gray"
+//     } else if (product.name === "DarkGray") {
+//       clone.querySelector("h2").innerText = "Dark Gray"
+//     } else {
+//       clone.querySelector("h2").innerText = product.name
+//     }
+
+//     //Price and quantity of the selected product (Individually)
+//     clone.querySelector("span").innerHTML = "x" + product.quantity
+//     clone.querySelector(".total-product-price").innerText =
+//       "$" + product.price + ".00"
+
+//     //To convert the spaced names into a more versitle version of themselves
+//     if (product.name === "Light Gray") {
+//       product.name = "LightGray"
+//       clone.querySelector(".cart-item").classList.add(product.name)
+//     } else if (product.name === "Dark Gray") {
+//       product.name = "DarkGray"
+//       clone.querySelector(".cart-item").classList.add(product.name)
+//     } else {
+//       clone.querySelector(".cart-item").classList.add(product.name)
+//     }
+
+//     //To determine the total price of the particular set of items
+//     for (const [key, value] of Object.entries(productNumbering)) {
+//       if (value > 1) {
+//         const productName = cartProductList.querySelector(".text-gray-900")
+
+//         if (productName.innerText === key) {
+//           clone.querySelector("span").innerHTML = "x" + product.quantity
+//           clone.querySelector(".total-product-price").innerText =
+//             "$" + product.price * product.quantity + ".00"
+//         }
+//       }
+//     }
+//     console.log(product)
+//     cartProductList.append(clone)
+// }
