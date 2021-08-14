@@ -125,7 +125,7 @@ productColor.forEach((color) => {
     //Price and quantity of the selected product (Individually)
     clone.querySelector("span").innerHTML = "x" + product.quantity
     clone.querySelector(".total-product-price").innerText =
-      "$" + product.price + ".00"
+      "$" + product.totalProductPrice + ".00"
 
     //To convert the spaced names into a more versitle version of themselves
     if (product.name === "Light Gray") {
