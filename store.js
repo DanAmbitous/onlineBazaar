@@ -104,10 +104,54 @@ productColor.forEach((product) => {
 // })
 
 productColor.forEach((color) => {
-  let data = sessionStorage.getItem(color)
+  let product = sessionStorage.getItem(color)
+  product = JSON.parse(product)
 
-  if (data != null) {
-    console.log(data)
+  if (product != null) {
+    console.log(product.image)
+    console.log(product)
+
+    const template = document.getElementsByTagName("template")[0]
+    const clone = template.content.cloneNode(true)
+    clone.querySelector("img").src = product.image
+    if (product.name === "LightGray") {
+      clone.querySelector("h2").innerText = "Light Gray"
+    } else if (product.name === "DarkGray") {
+      clone.querySelector("h2").innerText = "Dark Gray"
+    } else {
+      clone.querySelector("h2").innerText = product.name
+    }
+
+    //Price and quantity of the selected product (Individually)
+    clone.querySelector("span").innerHTML = "x" + product.quantity
+    clone.querySelector(".total-product-price").innerText =
+      "$" + product.price + ".00"
+
+    //To convert the spaced names into a more versitle version of themselves
+    if (product.name === "Light Gray") {
+      product.name = "LightGray"
+      clone.querySelector(".cart-item").classList.add(product.name)
+    } else if (product.name === "Dark Gray") {
+      product.name = "DarkGray"
+      clone.querySelector(".cart-item").classList.add(product.name)
+    } else {
+      clone.querySelector(".cart-item").classList.add(product.name)
+    }
+
+    //To determine the total price of the particular set of items
+    for (const [key, value] of Object.entries(productNumbering)) {
+      if (value > 1) {
+        const productName = cartProductList.querySelector(".text-gray-900")
+
+        if (productName.innerText === key) {
+          clone.querySelector("span").innerHTML = "x" + product.quantity
+          clone.querySelector(".total-product-price").innerText =
+            "$" + product.price * product.quantity + ".00"
+        }
+      }
+    }
+    console.log(product)
+    cartProductList.append(clone)
   }
 })
 
