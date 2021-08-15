@@ -89,6 +89,7 @@ function addProduct(e) {
 
   productUpdater(product, productNumbering)
   productQuantityTracker()
+  totalPrice()
 }
 
 function productUpdater(product, productNumbering) {
@@ -118,6 +119,27 @@ function productQuantityTracker() {
   quantityOfProducts = quantityOfProducts.reduce(reducer, 0)
 
   document.querySelector(".product-number").innerText = quantityOfProducts
+}
+
+function totalPrice() {
+  const products = document.querySelectorAll(".cart-item")
+
+  let quantityOfProducts = []
+  const reducer = (accumulator, currentValue) => accumulator + currentValue
+
+  products.forEach((product) => {
+    quantityOfProducts.push(
+      Number(
+        product.querySelector(".total-product-price").innerText.substring(1)
+      )
+    )
+  })
+
+  quantityOfProducts = quantityOfProducts.reduce(reducer, 0)
+
+  document.querySelector(
+    ".grand-total-price"
+  ).innerText = `$${quantityOfProducts}.00`
 }
 
 function productRemoval(e) {
