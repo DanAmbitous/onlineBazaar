@@ -45,8 +45,6 @@ productColor.forEach((product) => {
   productNumbering[`${product}`] = 0
 })
 
-console.log(productNumbering)
-
 //To detect a click on the add to cart button
 document.addEventListener("click", (e) => {
   if (e.target.classList.contains("add-to-cart-button")) {
@@ -72,10 +70,6 @@ function addProduct(e) {
   product.quantity = productNumbering[product.name] += 1
   product.totalPrice = product.quantity * product.price
 
-  console.log(product)
-
-  console.log(productNumbering)
-
   const template = document.getElementsByTagName("template")[0]
   const clone = template.content.cloneNode(true)
   clone.querySelector(".product-name-color").innerText = product.name
@@ -87,6 +81,7 @@ function addProduct(e) {
     product.quantity * product.price
   }.00`
 
+  sessionStorage.setItem(product.name, JSON.stringify(product))
   cartProductList.append(clone)
 }
 
