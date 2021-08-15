@@ -52,11 +52,15 @@ function productRemoval(e) {
         product.querySelector(".quantity").innerText.substring(1) - 1
       )
 
-      product.querySelector(".quantity").innerText = `x${quantity}`
+      if (quantity != 0) {
+        product.querySelector(".quantity").innerText = `x${quantity}`
 
-      product.querySelector(".total-product-price").innerText = `$${
-        quantity * data.basePrice
-      }.00`
+        product.querySelector(".total-product-price").innerText = `$${
+          quantity * data.basePrice
+        }.00`
+      } else {
+        product.remove()
+      }
     }
   })
 }
