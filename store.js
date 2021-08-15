@@ -3,6 +3,8 @@
   ;["jsdom-quokka-plugin"]
 }
 
+var _ = require("lodash")
+
 const buttons = document.querySelectorAll("button")
 const cartProductList = document.querySelector("#cart-product-list-container")
 const cartButton = document.querySelector("#cart-button")
@@ -72,6 +74,7 @@ function addProduct(e) {
 
   const template = document.getElementsByTagName("template")[0]
   const clone = template.content.cloneNode(true)
+  clone.querySelector(".cart-item").classList.add(product.name)
   clone.querySelector(".product-name-color").innerText = product.name
   clone.querySelector("img").src = product.image
   clone.querySelector(".quantity").innerText = `x${
@@ -81,8 +84,22 @@ function addProduct(e) {
     product.quantity * product.price
   }.00`
 
-  sessionStorage.setItem(product.name, JSON.stringify(product))
+  // sessionStorage.setItem(product.name, JSON.stringify(product))
   cartProductList.append(clone)
+
+  productUpdater(product, productNumbering)
+}
+
+function productUpdater(product, productNumbering) {
+  let products = Array.from(
+    cartProductList.querySelectorAll(`.${product.name}`)
+  )
+
+  products = _.initial(products)
+
+  products.forEach((product) => {
+    product.remove()
+  })
 }
 
 function productRemoval(e) {
