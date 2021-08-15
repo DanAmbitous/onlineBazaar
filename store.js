@@ -18,9 +18,9 @@ buttons.forEach((button) => {
   }
 })
 
-const productContainer = document
-  .querySelector(".add-to-cart-button")
-  .closest(".flex-wrap")
+// const productContainer = document
+//   .querySelector(".add-to-cart-button")
+//   .closest(".flex-wrap")
 
 // document.addEventListener("click", (e) => {
 //   if (e.target.classList.contains("add-to-cart-button")) {
@@ -88,6 +88,7 @@ function addProduct(e) {
   cartProductList.append(clone)
 
   productUpdater(product, productNumbering)
+  productQuantityTracker()
 }
 
 function productUpdater(product, productNumbering) {
@@ -100,6 +101,23 @@ function productUpdater(product, productNumbering) {
   products.forEach((product) => {
     product.remove()
   })
+}
+
+function productQuantityTracker() {
+  const products = document.querySelectorAll(".cart-item")
+
+  let quantityOfProducts = []
+  const reducer = (accumulator, currentValue) => accumulator + currentValue
+
+  products.forEach((product) => {
+    quantityOfProducts.push(
+      Number(product.querySelector(".quantity").innerText.substring(1))
+    )
+  })
+
+  quantityOfProducts = quantityOfProducts.reduce(reducer, 0)
+
+  document.querySelector(".product-number").innerText = quantityOfProducts
 }
 
 function productRemoval(e) {
