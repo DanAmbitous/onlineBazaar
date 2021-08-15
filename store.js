@@ -23,11 +23,10 @@ const productContainer = document
 document.addEventListener("click", (e) => {
   if (e.target.classList.contains("add-to-cart-button")) {
     productPacker(e.target)
-  } else if (
-    e.target.classList.contains("remove-product") ||
-    e.target.id === "remove-all-products"
-  ) {
-    productPacker(e.target, e)
+  } else if (e.target.classList.contains("remove-product")) {
+    productRemoval(e)
+  } else if (e.target.id === "remove-all-products") {
+    console.log("all were clicked")
   }
 })
 
@@ -41,6 +40,26 @@ const productColor = [
   "LightGray",
   "DarkGray",
 ]
+
+function productRemoval(e) {
+  productColor.forEach((color) => {
+    let data = JSON.parse(sessionStorage.getItem(color))
+
+    if (data != null) {
+      const product = e.target.parentElement.parentElement
+
+      let quantity = Number(
+        product.querySelector(".quantity").innerText.substring(1) - 1
+      )
+
+      product.querySelector(".quantity").innerText = `x${quantity}`
+
+      product.querySelector(".total-product-price").innerText = `$${
+        quantity * data.basePrice
+      }.00`
+    }
+  })
+}
 
 productColor.forEach((color, index) => {
   products[index].classList.add(color)
@@ -69,8 +88,7 @@ productColor.forEach((color) => {
 
     //Price and quantity of the selected product (Individually)
     clone.querySelector("span").innerHTML = "x" + product.quantity
-    clone.querySelector(".total-product-price").innerText =
-      "$" + product.totalProductPrice + ".00"
+    clone.querySelector(".total-product-price").innerText = product.totalPrice
 
     //To convert the spaced names into a more versitle version of themselves
     if (product.name === "Light Gray") {
@@ -209,87 +227,77 @@ function cartAdder(product, productNumbering, button, event) {
     sessionStorage.setItem(product.name, JSON.stringify(product))
   } else {
     if (!event.shiftKey && event.target.id !== "remove-all-products") {
-      let productName =
-        button.parentElement.parentElement.querySelector(
-          ".text-gray-900"
-        ).innerText
-
-      if (productName === "Light Gray") {
-        productName = "LightGray"
-      } else if (productName === "Dark Gray") {
-        productName = "DarkGray"
-      }
-
-      const productQuantity =
-        button.parentElement.parentElement.querySelector(".quantity")
-
-      for (const [key, value] of Object.entries(productNumbering)) {
-        if (key === productName) {
-          if (Number(productQuantity.innerText.substring(1)) === 1) {
-            button.parentElement.parentElement.remove()
-          }
-          value -= 1
-          productQuantity.innerText = `x${value}`
-
-          button.parentElement.parentElement.querySelector(
-            ".total-product-price"
-          ).innerText =
-            "$" +
-            Number(
-              document
-                .querySelector(`.${key}`)
-                .querySelector(".mt-1")
-                .innerText.substring(1)
-            ) *
-              Number(productQuantity.innerText.substring(1)) +
-            ".00"
-
-          productNumbering[key] = value
-        }
-
-        for (const [key, value] of Object.entries(productNumbering)) {
-          if (value > 1) {
-            const products = Array.from(
-              cartProductList.querySelectorAll(`.${key}`)
-            )
-            const outdatedProducts = products.slice(0, -1)
-            outdatedProducts.forEach((outdatedProduct) => {
-              outdatedProduct.remove()
-            })
-          }
-        }
-
-        quantityOfProductsDeterminer(productNumbering)
-        grandTotalPriceDeterminer(null)
-
-        product.totalPrice = cartProductList
-          .querySelector(`.${product.name}`)
-          .querySelector(".total-product-price").innerText
-
-        product.basePrice = Number(
-          document
-            .querySelector(`.${product.name}`)
-            .querySelector(".mt-1")
-            .innerText.substring(1)
-        )
-
-        sessionStorage.setItem(product.name, JSON.stringify(product))
-      }
-
-      quantityOfProductsDeterminer(productNumbering, button)
-      grandTotalPriceDeterminer(button)
-
-      storeTheListOfProducts()
+      // let productName =
+      //   button.parentElement.parentElement.querySelector(
+      //     ".text-gray-900"
+      //   ).innerText
+      // if (productName === "Light Gray") {
+      //   productName = "LightGray"
+      // } else if (productName === "Dark Gray") {
+      //   productName = "DarkGray"
+      // }
+      // const productQuantity =
+      //   button.parentElement.parentElement.querySelector(".quantity")
+      // for (const [key, value] of Object.entries(productNumbering)) {
+      //   if (key === productName) {
+      //     let product = sessionStorage.getItem(productName)
+      //     product = JSON.parse(product)
+      //     console.log(product)
+      //     if (Number(productQuantity.innerText.substring(1)) === 1) {
+      //       console.log("This has ran")
+      //       button.parentElement.parentElement.remove()
+      //     }
+      //     value -= 1
+      //     productQuantity.innerText = `x${value}`
+      //     button.parentElement.parentElement.querySelector(
+      //       ".total-product-price"
+      //     ).innerText =
+      //       "$" +
+      //       Number(
+      //         document
+      //           .querySelector(`.${key}`)
+      //           .querySelector(".mt-1")
+      //           .innerText.substring(1)
+      //       ) *
+      //         Number(productQuantity.innerText.substring(1)) +
+      //       ".00"
+      //     productNumbering[key] = value
+      //   }
+      //   for (const [key, value] of Object.entries(productNumbering)) {
+      //     if (value > 1) {
+      //       const products = Array.from(
+      //         cartProductList.querySelectorAll(`.${key}`)
+      //       )
+      //       const outdatedProducts = products.slice(0, -1)
+      //       outdatedProducts.forEach((outdatedProduct) => {
+      //         outdatedProduct.remove()
+      //       })
+      //     }
+      //   }
+      //   quantityOfProductsDeterminer(productNumbering)
+      //   grandTotalPriceDeterminer(null)
+      //   console.log(product, product.name)
+      //   product.totalPrice = cartProductList
+      //     .querySelector(`.${product.name}`)
+      //     .querySelector(".total-product-price").innerText
+      //   product.basePrice = Number(
+      //     document
+      //       .querySelector(`.${product.name}`)
+      //       .querySelector(".mt-1")
+      //       .innerText.substring(1)
+      //   )
+      //   sessionStorage.setItem(product.name, JSON.stringify(product))
+      // }
+      // quantityOfProductsDeterminer(productNumbering, button)
+      // grandTotalPriceDeterminer(button)
+      // storeTheListOfProducts()
     } else if (event.target.id === "remove-all-products") {
-      for (const [key, value] of Object.entries(productNumbering)) {
-        productNumbering[key] = 0
-      }
-
-      quantityOfProductsDeterminer(productNumbering, button)
-
-      grandTotalPriceDeterminer(null)
-
-      storeTheListOfProducts()
+      // for (const [key, value] of Object.entries(productNumbering)) {
+      //   productNumbering[key] = 0
+      // }
+      // quantityOfProductsDeterminer(productNumbering, button)
+      // grandTotalPriceDeterminer(null)
+      // storeTheListOfProducts()
     } else {
       const productName =
         button.parentElement.parentElement.querySelector(
@@ -341,6 +349,10 @@ function storeTheListOfProducts(product) {
 
 let prices = []
 function grandTotalPriceDeterminer(button) {
+  const productColor = button.parentElement.parentElement.querySelector(
+    ".product-name-color"
+  )
+  console.log(productColor)
   if (button != null) {
     if (!button.id === "remove-all-products") {
       if (
@@ -368,6 +380,9 @@ function grandTotalPriceDeterminer(button) {
   })
 
   const totalPrice = prices.reduce((sum, value) => (sum += value), 0)
+
+  let data = sessionStorage.getItem("key")
+
   document.querySelector(".grand-total-price").innerText = `$${totalPrice}.00`
 }
 
