@@ -51,6 +51,8 @@ productColor.forEach((product) => {
 document.addEventListener("click", (e) => {
   if (e.target.classList.contains("add-to-cart-button")) {
     addProduct(e)
+  } else if (e.target.classList.contains("remove-product")) {
+    removeProduct(e)
   }
 })
 
@@ -87,12 +89,43 @@ function addProduct(e) {
   // sessionStorage.setItem(product.name, JSON.stringify(product))
   cartProductList.append(clone)
 
-  productUpdater(product, productNumbering)
+  productUpdater(product)
   productQuantityTracker()
   totalPrice()
 }
 
-function productUpdater(product, productNumbering) {
+function removeProduct(e) {
+  const productElement =
+    e.target.parentElement.parentElement.querySelector("h2").innerText
+
+  console.log()
+
+  productNumbering[productElement] -= 1
+
+  e.target.parentElement.parentElement.querySelector(
+    ".quantity"
+  ).innerText = `x${
+    productNumbering[
+      e.target.parentElement.parentElement.querySelector("h2").innerText
+    ]
+  }`
+
+  e.target.parentElement.parentElement.querySelector(
+    ".total-product-price"
+  ).innerText = `$${
+    productNumbering[
+      e.target.parentElement.parentElement.querySelector("h2").innerText
+    ] *
+    Number(
+      document
+        .querySelector(`.${productElement}`)
+        .querySelector(".mt-1")
+        .innerText.substring(1)
+    )
+  }.00`
+}
+
+function productUpdater(product) {
   let products = Array.from(
     cartProductList.querySelectorAll(`.${product.name}`)
   )
