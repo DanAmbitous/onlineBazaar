@@ -40,18 +40,54 @@ const productColor = [
   "DarkGray",
 ]
 
+const productNumbering = {}
+productColor.forEach((product) => {
+  productNumbering[`${product}`] = 0
+})
+
+console.log(productNumbering)
+
+//To detect a click on the add to cart button
 document.addEventListener("click", (e) => {
   if (e.target.classList.contains("add-to-cart-button")) {
     addProduct(e)
   }
 })
 
+//Run functionality of putting the product to a object to utilize in the list and storage
 function addProduct(e) {
   const product = {}
   product.name = e.target
     .closest(".product-container")
     .querySelector("h2").innerText
+  product.price = Number(
+    e.target
+      .closest(".product-container")
+      .querySelector(".mt-1")
+      .innerText.substring(1)
+  )
+  product.image = e.target
+    .closest(".product-container")
+    .querySelector("img").src
+  product.quantity = productNumbering[product.name] += 1
+  product.totalPrice = product.quantity * product.price
+
   console.log(product)
+
+  console.log(productNumbering)
+
+  const template = document.getElementsByTagName("template")[0]
+  const clone = template.content.cloneNode(true)
+  clone.querySelector(".product-name-color").innerText = product.name
+  clone.querySelector("img").src = product.image
+  clone.querySelector(".quantity").innerText = `x${
+    productNumbering[product.name]
+  }`
+  clone.querySelector(".total-product-price").innerText = `$${
+    product.quantity * product.price
+  }.00`
+
+  cartProductList.append(clone)
 }
 
 function productRemoval(e) {
@@ -85,11 +121,6 @@ function addToStorage(product) {}
 productColor.forEach((color, index) => {
   products[index].classList.add(color)
   products[index].classList.add("product-container")
-})
-
-const productNumbering = {}
-productColor.forEach((product) => {
-  productNumbering[`${product}`] = 0
 })
 
 productColor.forEach((color) => {
