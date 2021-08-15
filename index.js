@@ -104,6 +104,8 @@ function recalculateProduct(e) {
       .innerText.substring(1)
   )
 
+  console.log(updatedProduct.totalProductPrice)
+
   sessionStorage.setItem(
     e.target.parentElement.parentElement.querySelector(".product-name-color")
       .innerText,

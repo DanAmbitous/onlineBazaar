@@ -51,66 +51,11 @@ productColor.forEach((product) => {
   productNumbering[`${product}`] = 0
 })
 
-// productColor.forEach((color) => {
-//   console.log(color)
-//   const product = sessionStorage.getItem(color)
-//   console.log(product)
-//   if (product != null) {
-//     console.log(sessionStorage.getItem(product))
-
-//     const template = document.getElementsByTagName("template")[0]
-//     const clone = template.content.cloneNode(true)
-//     clone.querySelector("img").src = product.image
-//     if (product.name === "LightGray") {
-//       clone.querySelector("h2").innerText = "Light Gray"
-//     } else if (product.name === "DarkGray") {
-//       clone.querySelector("h2").innerText = "Dark Gray"
-//     } else {
-//       clone.querySelector("h2").innerText = product.name
-//     }
-
-//     //Price and quantity of the selected product (Individually)
-//     clone.querySelector("span").innerHTML = "x" + product.quantity
-//     clone.querySelector(".total-product-price").innerText =
-//       "$" + product.price + ".00"
-
-//     //To convert the spaced names into a more versitle version of themselves
-//     if (product.name === "Light Gray") {
-//       product.name = "LightGray"
-//       clone.querySelector(".cart-item").classList.add(product.name)
-//     } else if (product.name === "Dark Gray") {
-//       product.name = "DarkGray"
-//       clone.querySelector(".cart-item").classList.add(product.name)
-//     } else {
-//       clone.querySelector(".cart-item").classList.add(product.name)
-//     }
-
-//     //To determine the total price of the particular set of items
-//     for (const [key, value] of Object.entries(productNumbering)) {
-//       if (value > 1) {
-//         const productName = cartProductList.querySelector(".text-gray-900")
-
-//         if (productName.innerText === key) {
-//           clone.querySelector("span").innerHTML = "x" + product.quantity
-//           clone.querySelector(".total-product-price").innerText =
-//             "$" + product.price * product.quantity + ".00"
-//         }
-//       }
-//     }
-
-//     console.log(product)
-//     cartProductList.append(clone)
-//   }
-// })
-
 productColor.forEach((color) => {
   let product = sessionStorage.getItem(color)
   product = JSON.parse(product)
 
   if (product != null) {
-    console.log(product.image)
-    console.log(product)
-
     const template = document.getElementsByTagName("template")[0]
     const clone = template.content.cloneNode(true)
     clone.querySelector("img").src = product.image
@@ -140,18 +85,15 @@ productColor.forEach((color) => {
 
     //To determine the total price of the particular set of items
     for (const [key, value] of Object.entries(productNumbering)) {
-      if (value > 1) {
-        const productName = cartProductList.querySelector(".text-gray-900")
-
-        if (productName.innerText === key) {
-          clone.querySelector("span").innerHTML = "x" + product.quantity
-          clone.querySelector(".total-product-price").innerText =
-            "$" + product.price * product.quantity + ".00"
-        }
+      if (key === product.name) {
+        productNumbering[key] = product.quantity
       }
     }
-    console.log(product)
+
+    console.log(productNumbering)
     cartProductList.append(clone)
+
+    calculateNumberOfProducts()
   }
 })
 
@@ -189,47 +131,56 @@ function productPacker(button, event) {
 // const anEnumerationOfProducts = []
 function cartAdder(product, productNumbering, button, event) {
   if (product != null) {
-    const template = document.getElementsByTagName("template")[0]
-    const clone = template.content.cloneNode(true)
-    clone.querySelector("img").src = product.image
-    if (product.name === "LightGray") {
-      clone.querySelector("h2").innerText = "Light Gray"
-    } else if (product.name === "DarkGray") {
-      clone.querySelector("h2").innerText = "Dark Gray"
-    } else {
-      clone.querySelector("h2").innerText = product.name
-    }
+    productColor.forEach((color) => {
+      let products = document.querySelectorAll(color)
+      if (products != null) {
+      } else {
+      }
 
-    //Price and quantity of the selected product (Individually)
-    clone.querySelector("span").innerHTML = "x" + product.quantity
-    clone.querySelector(".total-product-price").innerText =
-      "$" + product.price + ".00"
+      const template = document.getElementsByTagName("template")[0]
+      const clone = template.content.cloneNode(true)
+      clone.querySelector("img").src = product.image
+      if (product.name === "LightGray") {
+        clone.querySelector("h2").innerText = "Light Gray"
+      } else if (product.name === "DarkGray") {
+        clone.querySelector("h2").innerText = "Dark Gray"
+      } else {
+        clone.querySelector("h2").innerText = product.name
+      }
 
-    //To convert the spaced names into a more versitle version of themselves
-    if (product.name === "Light Gray") {
-      product.name = "LightGray"
-      clone.querySelector(".cart-item").classList.add(product.name)
-    } else if (product.name === "Dark Gray") {
-      product.name = "DarkGray"
-      clone.querySelector(".cart-item").classList.add(product.name)
-    } else {
-      clone.querySelector(".cart-item").classList.add(product.name)
-    }
+      //Price and quantity of the selected product (Individually)
+      clone.querySelector("span").innerHTML = "x" + product.quantity
 
-    //To determine the total price of the particular set of items
-    for (const [key, value] of Object.entries(productNumbering)) {
-      if (value > 1) {
-        const productName = cartProductList.querySelector(".text-gray-900")
+      let totalPrice = product.quantity * product.basePrice
 
-        if (productName.innerText === key) {
-          clone.querySelector("span").innerHTML = "x" + product.quantity
-          clone.querySelector(".total-product-price").innerText =
-            "$" + product.price * product.quantity + ".00"
+      clone.querySelector(".total-product-price").innerText =
+        "$" + totalPrice + ".00"
+
+      //To convert the spaced names into a more versitle version of themselves
+      if (product.name === "Light Gray") {
+        product.name = "LightGray"
+        clone.querySelector(".cart-item").classList.add(product.name)
+      } else if (product.name === "Dark Gray") {
+        product.name = "DarkGray"
+        clone.querySelector(".cart-item").classList.add(product.name)
+      } else {
+        clone.querySelector(".cart-item").classList.add(product.name)
+      }
+
+      //To determine the total price of the particular set of items
+      for (const [key, value] of Object.entries(productNumbering)) {
+        if (value > 1) {
+          const productName = cartProductList.querySelector(".text-gray-900")
+
+          if (productName.innerText === key) {
+            clone.querySelector("span").innerHTML = "x" + product.quantity
+            clone.querySelector(".total-product-price").innerText =
+              "$" + product.price * product.quantity + ".00"
+          }
         }
       }
-    }
-    console.log(product)
-    cartProductList.append(clone)
+      cartProductList.append(clone)
+    })
 
     //Remove previous of the same products so only one element would represent it
     for (const [key, value] of Object.entries(productNumbering)) {
@@ -295,6 +246,34 @@ function cartAdder(product, productNumbering, button, event) {
 
           productNumbering[key] = value
         }
+
+        for (const [key, value] of Object.entries(productNumbering)) {
+          if (value > 1) {
+            const products = Array.from(
+              cartProductList.querySelectorAll(`.${key}`)
+            )
+            const outdatedProducts = products.slice(0, -1)
+            outdatedProducts.forEach((outdatedProduct) => {
+              outdatedProduct.remove()
+            })
+          }
+        }
+
+        quantityOfProductsDeterminer(productNumbering)
+        grandTotalPriceDeterminer(null)
+
+        product.totalPrice = cartProductList
+          .querySelector(`.${product.name}`)
+          .querySelector(".total-product-price").innerText
+
+        product.basePrice = Number(
+          document
+            .querySelector(`.${product.name}`)
+            .querySelector(".mt-1")
+            .innerText.substring(1)
+        )
+
+        sessionStorage.setItem(product.name, JSON.stringify(product))
       }
 
       quantityOfProductsDeterminer(productNumbering, button)
@@ -336,20 +315,6 @@ function cartAdder(product, productNumbering, button, event) {
 
       storeTheListOfProducts()
     }
-
-    // console.log(button)
-
-    // let quantityOfProduct = Number(
-    //   button.parentElement.parentElement
-    //     .querySelector(".text-gray-600")
-    //     .innerText.substring(1)
-    // )
-
-    // quantityOfProduct -= 1
-
-    // button.parentElement.parentElement.querySelector(
-    //   ".text-gray-600"
-    // ).innerText = `x${quantityOfProduct}`
   }
 
   let products = []
@@ -362,146 +327,7 @@ function cartAdder(product, productNumbering, button, event) {
 
     products.push(JSON.parse(sessionStorage.getItem(productColor)))
   })
-
-  console.log(products)
-
-  // function addProductsToTheCart() {
-  //   products.forEach((product) => {
-  //     if (product != null) {
-  //       const template = document.getElementsByTagName("template")[0]
-  //       const element = template.content.cloneNode(true)
-  //       element.querySelector(".product-name-color").innerText = product.name
-  //       element.querySelector(".quantity").innerText = `x${product.quantity}`
-  //       element.querySelector(".object-cover").src = product.image
-  //       element.querySelector(".product-name-color").innerText = product.name
-  //       element.querySelector(".total-product-price").innerText =
-  //         product.totalPrice
-  //       element.querySelector(
-  //         ".base-price"
-  //       ).innerText = `$${product.basePrice}.00`
-
-  //       cartProductList.append(element)
-  //     }
-  //   })
-
-  //   console.log(products)
-  // }
-
-  // addProductsToTheCart()
-
-  // } else {
-  //   let quantityOfProduct = Number(
-  //     button.parentElement.parentElement
-  //       .querySelector(".text-gray-600")
-  //       .innerText.substring(1)
-  //   )
-
-  //   const productName =
-  //     button.parentElement.parentElement.querySelector(".font-medium").innerText
-
-  //   if (quantityOfProduct <= 1) {
-  //     for (const key in productNumbering) {
-  //       if (Object.hasOwnProperty.call(productNumbering, key)) {
-  //         productNumbering[key] = 0
-  //       }
-
-  //       const productCost = Number(
-  //         document
-  //           .querySelector(`.${key}`)
-  //           .querySelector(".mt-1")
-  //           .innerText.substring(1)
-  //       )
-
-  //       console.log("Product price:" + productCost)
-
-  //       totalPriceCalculator(productCost, true)
-
-  //       button.parentElement.parentElement.remove()
-
-  //       cartShower()
-  //     }
-  //   } else {
-  //     quantityOfProduct -= 1
-
-  // button.parentElement.parentElement.querySelector(
-  //   ".text-gray-600"
-  // ).innerText = `x${quantityOfProduct}`
-
-  //     for (const [key, value] of Object.entries(productNumbering)) {
-  //       if (key === productName) {
-  //         value = quantityOfProduct
-
-  //         const totalProductCost =
-  //           button.parentElement.parentElement.querySelector(
-  //             ".total-product-price"
-  //           )
-
-  //         const productPrice = Number(
-  //           document
-  //             .querySelector(`.${key}`)
-  //             .querySelector(".mt-1")
-  //             .innerText.substring(1)
-  //         )
-
-  //         totalProductCost.innerText = `$${productPrice * quantityOfProduct}.00`
-
-  //         for (const key in productNumbering) {
-  //           if (Object.hasOwnProperty.call(productNumbering, key)) {
-  //             if (key === productName) {
-  //               productNumbering[key] = value
-  //             }
-  //           }
-  //         }
-
-  //         const productCost = Number(
-  //           document
-  //             .querySelector(`.${key}`)
-  //             .querySelector(".mt-1")
-  //             .innerText.substring(1)
-  //         )
-  //         console.log(productCost)
-  //         totalPriceCalculator(productCost, true)
-  //       }
-  //     }
-
-  //     quantityOfProduct = Number(
-  //       button.parentElement.parentElement
-  //         .querySelector(".text-gray-600")
-  //         .innerText.substring(1)
-  //     )
-  //   }
-  // }
 }
-
-// const productPrices = []
-// function totalPriceCalculator(price, removal) {
-//   if (!removal) {
-//     console.log(price)
-
-//     productPrices.push(price)
-//     console.log(productPrices)
-//   } else {
-//     console.log(productPrices)
-//     const notMatchingCosts = productPrices.filter(
-//       (productPrice) => productPrice != price
-//     )
-//     const matchingCosts = productPrices.filter(
-//       (productPrice) => productPrice === price
-//     )
-
-//     matchingCosts.pop()
-
-//     productPrices.length = 0
-
-//     notMatchingCosts.forEach((notMatchingCost) => {
-//       productPrices.push(notMatchingCost)
-//     })
-
-//     matchingCosts.forEach((matchingCost) => {
-//       productPrices.push(matchingCost)
-//     })
-//   }
-// }
 
 function storeTheListOfProducts(product) {
   const products = document.querySelectorAll(".cart-item")
@@ -567,7 +393,6 @@ function quantityOfProductsDeterminer(productNumbering, button) {
       document.querySelector(".product-number").innerText = productQuantity
     }
   } else {
-    console.log("hi")
   }
 }
 
@@ -602,46 +427,13 @@ cartButton.addEventListener("click", (e) => {
   cartShower()
 })
 
-// function appendToTheList(params) {
-//   const template = document.getElementsByTagName("template")[0]
-//     const clone = template.content.cloneNode(true)
-//     clone.querySelector("img").src = product.image
-//     if (product.name === "LightGray") {
-//       clone.querySelector("h2").innerText = "Light Gray"
-//     } else if (product.name === "DarkGray") {
-//       clone.querySelector("h2").innerText = "Dark Gray"
-//     } else {
-//       clone.querySelector("h2").innerText = product.name
-//     }
+function calculateNumberOfProducts() {
+  const products = document.querySelectorAll(".quantity")
+  const productAmountDisplayer = document.querySelector(".product-number")
 
-//     //Price and quantity of the selected product (Individually)
-//     clone.querySelector("span").innerHTML = "x" + product.quantity
-//     clone.querySelector(".total-product-price").innerText =
-//       "$" + product.price + ".00"
+  let i = 0
 
-//     //To convert the spaced names into a more versitle version of themselves
-//     if (product.name === "Light Gray") {
-//       product.name = "LightGray"
-//       clone.querySelector(".cart-item").classList.add(product.name)
-//     } else if (product.name === "Dark Gray") {
-//       product.name = "DarkGray"
-//       clone.querySelector(".cart-item").classList.add(product.name)
-//     } else {
-//       clone.querySelector(".cart-item").classList.add(product.name)
-//     }
-
-//     //To determine the total price of the particular set of items
-//     for (const [key, value] of Object.entries(productNumbering)) {
-//       if (value > 1) {
-//         const productName = cartProductList.querySelector(".text-gray-900")
-
-//         if (productName.innerText === key) {
-//           clone.querySelector("span").innerHTML = "x" + product.quantity
-//           clone.querySelector(".total-product-price").innerText =
-//             "$" + product.price * product.quantity + ".00"
-//         }
-//       }
-//     }
-//     console.log(product)
-//     cartProductList.append(clone)
-// }
+  products.forEach((product) => {
+    productAmountDisplayer.innerText = Number(product.innerText.substring(1))
+  })
+}
