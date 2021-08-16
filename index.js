@@ -13,143 +13,180 @@ const productColor = [
   "DarkGray",
 ]
 
-let products = []
-productColor.forEach((productColor) => {
-  if (productColor === "Light Gray") {
-    productColor = "LightGray"
-  } else if (productColor === "Dark Gray") {
-    productColor = "DarkGray"
-  }
-
-  products.push(JSON.parse(sessionStorage.getItem(productColor)))
+productNumbering = {}
+productColor.forEach((product) => {
+  productNumbering[`${product}`] = 0
 })
+console.log(productNumbering)
 
-console.log(products)
+function getProducts() {
+  productColor.forEach((productColor) => {
+    let product = sessionStorage.getItem(productColor)
 
-function addProductsToTheCart() {
-  products.forEach((product) => {
     if (product != null) {
-      const template = document.getElementsByTagName("template")[0]
-      const element = template.content.cloneNode(true)
-      element.querySelector(".product-name-color").innerText = product.name
-      element.querySelector(".quantity").innerText = `x${product.quantity}`
-      element.querySelector(".object-cover").src = product.image
-      element.querySelector(".product-name-color").innerText = product.name
-      element.querySelector(".total-product-price").innerText =
-        product.totalPrice
-      element.querySelector(
-        ".base-price"
-      ).innerText = `$${product.basePrice}.00`
+      product = JSON.parse(product)
+      console.log(product)
 
-      cartProductList.append(element)
+      productNumbering[product.name] = product.quantity
+
+      const template = document.getElementsByTagName("template")[0]
+      const clone = template.content.cloneNode(true)
+      clone.querySelector(".cart-item").classList.add(product.name)
+      clone.querySelector(".product-name-color").innerText = product.name
+      clone.querySelector("img").src = product.image
+      clone.querySelector(".quantity").innerText = `x${
+        productNumbering[product.name]
+      }`
+      clone.querySelector(".total-product-price").innerText = `$${
+        product.quantity * product.price
+      }.00`
+
+      cartProductList.append(clone)
+
+      console.log(productNumbering)
     }
   })
 }
 
-addProductsToTheCart()
+getProducts()
 
-cartProductList.addEventListener("click", (e) => {
-  if (e.target.classList.contains("absolute")) {
-    recalculateProduct(e)
-  }
-})
+// let products = []
+// productColor.forEach((productColor) => {
+//   if (productColor === "Light Gray") {
+//     productColor = "LightGray"
+//   } else if (productColor === "Dark Gray") {
+//     productColor = "DarkGray"
+//   }
 
-function recalculateProduct(e) {
-  let quantity = Number(
-    e.target.parentElement.parentElement
-      .querySelector(".quantity")
-      .innerText.substring(1)
-  )
+//   products.push(JSON.parse(sessionStorage.getItem(productColor)))
+// })
 
-  quantity -= 1
+// console.log(products)
 
-  e.target.parentElement.parentElement.querySelector(
-    ".quantity"
-  ).innerText = `x${quantity}`
+// function addProductsToTheCart() {
+//   products.forEach((product) => {
+//     if (product != null) {
+//       const template = document.getElementsByTagName("template")[0]
+//       const element = template.content.cloneNode(true)
+//       element.querySelector(".product-name-color").innerText = product.name
+//       element.querySelector(".quantity").innerText = `x${product.quantity}`
+//       element.querySelector(".object-cover").src = product.image
+//       element.querySelector(".product-name-color").innerText = product.name
+//       element.querySelector(".total-product-price").innerText =
+//         product.totalPrice
+//       element.querySelector(
+//         ".base-price"
+//       ).innerText = `$${product.basePrice}.00`
 
-  sessionStorage.removeItem(
-    e.target.parentElement.parentElement.querySelector(".product-name-color")
-      .innerText
-  )
+//       cartProductList.append(element)
+//     }
+//   })
+// }
 
-  let productPrice = Number(
-    e.target.parentElement.parentElement
-      .querySelector(".base-price")
-      .innerText.substring(1)
-  )
+// addProductsToTheCart()
 
-  e.target.parentElement.parentElement.querySelector(
-    ".total-product-price"
-  ).innerText = `$${productPrice * quantity}.00`
+// cartProductList.addEventListener("click", (e) => {
+//   if (e.target.classList.contains("absolute")) {
+//     recalculateProduct(e)
+//   }
+// })
 
-  const updatedProduct = {}
-  updatedProduct.basePrice = Number(
-    e.target.parentElement.parentElement
-      .querySelector(".base-price")
-      .innerText.substring(1)
-  )
-  updatedProduct.image =
-    e.target.parentElement.parentElement.querySelector("img").src
-  updatedProduct.name = e.target.parentElement.parentElement.querySelector(
-    ".product-name-color"
-  ).innerText
-  updatedProduct.quantity = Number(
-    e.target.parentElement.parentElement
-      .querySelector(".quantity")
-      .innerText.substring(1)
-  )
-  updatedProduct.totalProductPrice = Number(
-    e.target.parentElement.parentElement
-      .querySelector(".total-product-price")
-      .innerText.substring(1)
-  )
+// function recalculateProduct(e) {
+//   let quantity = Number(
+//     e.target.parentElement.parentElement
+//       .querySelector(".quantity")
+//       .innerText.substring(1)
+//   )
 
-  console.log(updatedProduct.totalProductPrice)
+//   quantity -= 1
 
-  sessionStorage.setItem(
-    e.target.parentElement.parentElement.querySelector(".product-name-color")
-      .innerText,
-    JSON.stringify(updatedProduct)
-  )
+//   e.target.parentElement.parentElement.querySelector(
+//     ".quantity"
+//   ).innerText = `x${quantity}`
 
-  if (quantity === 0) {
-    console.log("asd")
+//   sessionStorage.removeItem(
+//     e.target.parentElement.parentElement.querySelector(".product-name-color")
+//       .innerText
+//   )
 
-    e.target.parentElement.parentElement.remove()
+//   let productPrice = Number(
+//     e.target.parentElement.parentElement
+//       .querySelector(".base-price")
+//       .innerText.substring(1)
+//   )
 
-    sessionStorage.removeItem(
-      e.target.parentElement.parentElement.querySelector(".product-name-color")
-        .innerText
-    )
-  }
+//   e.target.parentElement.parentElement.querySelector(
+//     ".total-product-price"
+//   ).innerText = `$${productPrice * quantity}.00`
 
-  cartViewController()
-}
+//   const updatedProduct = {}
+//   updatedProduct.basePrice = Number(
+//     e.target.parentElement.parentElement
+//       .querySelector(".base-price")
+//       .innerText.substring(1)
+//   )
+//   updatedProduct.image =
+//     e.target.parentElement.parentElement.querySelector("img").src
+//   updatedProduct.name = e.target.parentElement.parentElement.querySelector(
+//     ".product-name-color"
+//   ).innerText
+//   updatedProduct.quantity = Number(
+//     e.target.parentElement.parentElement
+//       .querySelector(".quantity")
+//       .innerText.substring(1)
+//   )
+//   updatedProduct.totalProductPrice = Number(
+//     e.target.parentElement.parentElement
+//       .querySelector(".total-product-price")
+//       .innerText.substring(1)
+//   )
 
-function cartViewController() {
-  if (cartProductList.querySelectorAll(".cart-item").length === 0) {
-    document.querySelector(".list-container").style.display = "none"
-  }
-}
+//   console.log(updatedProduct.totalProductPrice)
 
-function cartShower() {
-  if (
-    cartProductList.querySelectorAll(".cart-item").length === 0 ||
-    cartButton.dataset.status === "show"
-  ) {
-    cartButton.dataset.status = "hide"
-    document.querySelector(".list-container").style.display = "none"
-  } else if (
-    cartButton.dataset.status === "hide" &&
-    cartProductList.children.length > 1
-  ) {
-    cartButton.dataset.status = "show"
-    document.querySelector(".list-container").style.display = "block"
-  }
-}
+//   sessionStorage.setItem(
+//     e.target.parentElement.parentElement.querySelector(".product-name-color")
+//       .innerText,
+//     JSON.stringify(updatedProduct)
+//   )
 
-cartShower()
+//   if (quantity === 0) {
+//     console.log("asd")
 
-cartButton.addEventListener("click", (e) => {
-  cartShower()
-})
+//     e.target.parentElement.parentElement.remove()
+
+//     sessionStorage.removeItem(
+//       e.target.parentElement.parentElement.querySelector(".product-name-color")
+//         .innerText
+//     )
+//   }
+
+//   cartViewController()
+// }
+
+// function cartViewController() {
+//   if (cartProductList.querySelectorAll(".cart-item").length === 0) {
+//     document.querySelector(".list-container").style.display = "none"
+//   }
+// }
+
+// function cartShower() {
+//   if (
+//     cartProductList.querySelectorAll(".cart-item").length === 0 ||
+//     cartButton.dataset.status === "show"
+//   ) {
+//     cartButton.dataset.status = "hide"
+//     document.querySelector(".list-container").style.display = "none"
+//   } else if (
+//     cartButton.dataset.status === "hide" &&
+//     cartProductList.children.length > 1
+//   ) {
+//     cartButton.dataset.status = "show"
+//     document.querySelector(".list-container").style.display = "block"
+//   }
+// }
+
+// cartShower()
+
+// cartButton.addEventListener("click", (e) => {
+//   cartShower()
+// })
