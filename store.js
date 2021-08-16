@@ -148,6 +148,9 @@ function removeProduct(e) {
     e.target.parentElement.parentElement.querySelector("h2").innerText,
     JSON.stringify(product)
   )
+
+  productQuantityTracker()
+  totalPrice()
 }
 
 function productUpdater(product) {
