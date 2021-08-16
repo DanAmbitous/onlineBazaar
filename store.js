@@ -86,7 +86,7 @@ function addProduct(e) {
     product.quantity * product.price
   }.00`
 
-  // sessionStorage.setItem(product.name, JSON.stringify(product))
+  sessionStorage.setItem(product.name, JSON.stringify(product))
   cartProductList.append(clone)
 
   productUpdater(product)
@@ -95,12 +95,10 @@ function addProduct(e) {
 }
 
 function removeProduct(e) {
-  const productElement =
+  const productName =
     e.target.parentElement.parentElement.querySelector("h2").innerText
 
-  console.log()
-
-  productNumbering[productElement] -= 1
+  productNumbering[productName] -= 1
 
   e.target.parentElement.parentElement.querySelector(
     ".quantity"
@@ -118,11 +116,38 @@ function removeProduct(e) {
     ] *
     Number(
       document
-        .querySelector(`.${productElement}`)
+        .querySelector(`.${productName}`)
         .querySelector(".mt-1")
         .innerText.substring(1)
     )
   }.00`
+
+  console.log(
+    document
+      .querySelector(`.${productName}`)
+      .querySelector(".mt-1")
+      .innerText.substring(1)
+  )
+
+  const productElement = e.target.parentElement.parentElement
+  const product = {}
+  product.name = productElement.querySelector("h2").innerText
+  product.price = Number(
+    document
+      .querySelector(`.${productName}`)
+      .querySelector(".mt-1")
+      .innerText.substring(1)
+  )
+  product.image = productElement.querySelector("img").src
+  product.quantity = productNumbering[product.name]
+  product.totalPrice = product.quantity * product.price
+
+  console.log(product)
+
+  sessionStorage.setItem(
+    e.target.parentElement.parentElement.querySelector("h2").innerText,
+    JSON.stringify(product)
+  )
 }
 
 function productUpdater(product) {
