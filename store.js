@@ -53,6 +53,8 @@ document.addEventListener("click", (e) => {
     addProduct(e)
   } else if (e.target.classList.contains("remove-product")) {
     removeProduct(e)
+  } else if (e.target.id === "remove-all-products") {
+    removeAllProducts(e)
   }
 })
 
@@ -170,6 +172,24 @@ function removeProduct(e) {
     totalPrice()
     productExistenceChecker(productNumbering)
   }
+}
+
+function removeAllProducts() {
+  const products = cartProductList.querySelectorAll(".cart-item")
+
+  products.forEach((product) => {
+    product.remove()
+  })
+
+  for (const [key, value] of Object.entries(productNumbering)) {
+    productNumbering[key] = 0
+
+    sessionStorage.removeItem(key)
+  }
+
+  productQuantityTracker()
+  totalPrice()
+  productExistenceChecker(productNumbering)
 }
 
 function productExistenceChecker(productNumbering) {
