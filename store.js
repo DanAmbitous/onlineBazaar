@@ -3,7 +3,7 @@
   ;["jsdom-quokka-plugin"]
 }
 
-var _ = require("lodash")
+const _ = require("lodash")
 
 const buttons = document.querySelectorAll("button")
 const cartProductList = document.querySelector("#cart-product-list-container")
@@ -17,19 +17,6 @@ buttons.forEach((button) => {
     button.classList.add("add-to-cart-button")
   }
 })
-
-// const productContainer = document
-//   .querySelector(".add-to-cart-button")
-//   .closest(".flex-wrap")
-
-// document.addEventListener("click", (e) => {
-//   if (e.target.classList.contains("add-to-cart-button")) {
-//     productPacker(e.target)
-//   } else if (e.target.classList.contains("remove-product")) {
-//     productRemoval(e)
-//   } else if (e.target.id === "remove-all-products") {
-//   }
-// })
 
 const productColor = [
   "Red",
@@ -147,10 +134,10 @@ function removeProduct(e) {
 
     console.log(product)
 
-    // sessionStorage.setItem(
-    //   e.target.parentElement.parentElement.querySelector("h2").innerText,
-    //   JSON.stringify(product)
-    // )
+    sessionStorage.setItem(
+      e.target.parentElement.parentElement.querySelector("h2").innerText,
+      JSON.stringify(product)
+    )
 
     productQuantityTracker()
     totalPrice()
@@ -316,7 +303,9 @@ productColor.forEach((color) => {
 
     //Price and quantity of the selected product (Individually)
     clone.querySelector("span").innerHTML = "x" + product.quantity
-    clone.querySelector(".total-product-price").innerText = product.totalPrice
+    clone.querySelector(
+      ".total-product-price"
+    ).innerText = `$${product.totalPrice}.00`
 
     //To convert the spaced names into a more versitle version of themselves
     if (product.name === "Light Gray") {
