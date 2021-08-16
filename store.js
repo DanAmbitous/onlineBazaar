@@ -86,7 +86,7 @@ function addProduct(e) {
     product.quantity * product.price
   }.00`
 
-  // sessionStorage.setItem(product.name, JSON.stringify(product))
+  sessionStorage.setItem(product.name, JSON.stringify(product))
   cartProductList.append(clone)
 
   productUpdater(product)
@@ -155,7 +155,20 @@ function removeProduct(e) {
 
     productExistenceChecker(productNumbering)
   } else {
-    console.log("true")
+    const productName =
+      e.target.parentElement.parentElement.querySelector("h2").innerText
+    console.log(productNumbering[productName])
+    productNumbering[productName] = 0
+
+    console.log(productNumbering[productName])
+
+    cartProductList.querySelector(`.${productName}`).remove()
+
+    sessionStorage.removeItem(productName)
+
+    productQuantityTracker()
+    totalPrice()
+    productExistenceChecker(productNumbering)
   }
 }
 
@@ -173,7 +186,13 @@ function productExistenceChecker(productNumbering) {
     }
   }
 
-  cartShower()
+  const products = cartProductList.querySelectorAll(".cart-item")
+
+  console.log(products)
+
+  if (products.length === 0) {
+    cartShower()
+  }
 }
 
 function productUpdater(product) {
