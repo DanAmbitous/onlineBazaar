@@ -190,6 +190,8 @@ function productExistenceChecker(productNumbering) {
           quantitilessProduct.remove()
         }
       })
+
+      sessionStorage.removeItem(key)
     }
   }
 
