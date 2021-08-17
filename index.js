@@ -42,13 +42,41 @@ function getProducts() {
       }.00`
 
       cartProductList.append(clone)
-
-      console.log(productNumbering)
     }
   })
+
+  productListDisplayer()
 }
 
 getProducts()
+
+function productListDisplayer() {
+  const products = cartProductList.querySelectorAll(".cart-item")
+
+  if (products.length === 0) {
+    productContainer.style.display = "none"
+  }
+}
+
+document.addEventListener("click", (e) => {
+  if (e.target.classList.contains("cart-list-button")) {
+    productListShower(e)
+  }
+})
+
+function productListShower(e) {
+  const button = e.target.closest("button")
+
+  if (button.dataset.status === "show") {
+    productContainer.style.display = "none"
+    button.dataset.status = "hide"
+  } else {
+    productContainer.style.display = "block"
+    button.dataset.status = "show"
+  }
+
+  productListDisplayer()
+}
 
 // let products = []
 // productColor.forEach((productColor) => {
