@@ -107,6 +107,7 @@ function removeProduct(e) {
         const product = cartProductList.querySelector(`.${key}`)
         product.remove()
         productNumbering[key] = 0
+        console.log(productNumbering)
         sessionStorage.removeItem(key)
       }
     }
@@ -125,8 +126,29 @@ document.addEventListener("click", (e) => {
     productListDisplayer()
   } else if (e.target.classList.contains("remove-product")) {
     removeProduct(e)
+  } else if (e.target.id === "remove-all-products") {
+    removeAllProducts()
   }
 })
+
+function removeAllProducts() {
+  console.log("hi")
+  const products = cartProductList.querySelectorAll(".cart-item")
+
+  products.forEach((product) => {
+    product.remove()
+
+    for (const [key, value] of Object.entries(productNumbering)) {
+      productNumbering[key] = 0
+    }
+  })
+
+  sessionStorage.clear()
+
+  productListDisplayer()
+  productQuantityTracker()
+  totalPrice()
+}
 
 function productQuantityTracker() {
   const products = document.querySelectorAll(".cart-item")
