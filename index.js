@@ -17,7 +17,6 @@ productNumbering = {}
 productColor.forEach((product) => {
   productNumbering[`${product}`] = 0
 })
-console.log(productNumbering)
 
 function getProducts() {
   productColor.forEach((productColor) => {
@@ -52,31 +51,25 @@ getProducts()
 
 function productListDisplayer() {
   const products = cartProductList.querySelectorAll(".cart-item")
-
-  if (products.length === 0) {
+  console.log(document.querySelector("#cart-button").dataset.status)
+  if (
+    products.length === 0 ||
+    document.querySelector("#cart-button").dataset.status === "show"
+  ) {
+    document.querySelector("#cart-button").dataset.status = "hide"
     productContainer.style.display = "none"
+  } else if (document.querySelector("#cart-button").dataset.status === "hide") {
+    document.querySelector("#cart-button").dataset.status = "show"
+
+    productContainer.style.display = "block"
   }
 }
 
 document.addEventListener("click", (e) => {
   if (e.target.classList.contains("cart-list-button")) {
-    productListShower(e)
+    productListDisplayer()
   }
 })
-
-function productListShower(e) {
-  const button = e.target.closest("button")
-
-  if (button.dataset.status === "show") {
-    productContainer.style.display = "none"
-    button.dataset.status = "hide"
-  } else {
-    productContainer.style.display = "block"
-    button.dataset.status = "show"
-  }
-
-  productListDisplayer()
-}
 
 // let products = []
 // productColor.forEach((productColor) => {

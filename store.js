@@ -47,6 +47,9 @@ document.addEventListener("click", (e) => {
 
 //Run functionality of putting the product to a object to utilize in the list and storage
 function addProduct(e) {
+  const productName =
+    e.target.parentElement.parentElement.querySelector("h2").innerText
+
   const product = {}
   product.name = e.target
     .closest(".product-container")
@@ -62,6 +65,12 @@ function addProduct(e) {
     .querySelector("img").src
   product.quantity = productNumbering[product.name] += 1
   product.totalPrice = product.quantity * product.price
+  product.basePrice = Number(
+    document
+      .querySelector(`.${productName}`)
+      .querySelector(".mt-1")
+      .innerText.substring(1)
+  )
 
   const template = document.getElementsByTagName("template")[0]
   const clone = template.content.cloneNode(true)
