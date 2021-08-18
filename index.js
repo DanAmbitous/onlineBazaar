@@ -45,6 +45,7 @@ function getProducts() {
   })
 
   productListDisplayer()
+  productQuantityTracker()
 }
 
 getProducts()
@@ -98,6 +99,8 @@ function removeProduct(e) {
   if (productContainer.querySelectorAll(".cart-item").length === 0) {
     productListDisplayer()
   }
+
+  productQuantityTracker()
 }
 
 document.addEventListener("click", (e) => {
@@ -107,6 +110,23 @@ document.addEventListener("click", (e) => {
     removeProduct(e)
   }
 })
+
+function productQuantityTracker() {
+  const products = document.querySelectorAll(".cart-item")
+
+  let quantityOfProducts = []
+  const reducer = (accumulator, currentValue) => accumulator + currentValue
+
+  products.forEach((product) => {
+    quantityOfProducts.push(
+      Number(product.querySelector(".quantity").innerText.substring(1))
+    )
+  })
+
+  quantityOfProducts = quantityOfProducts.reduce(reducer, 0)
+
+  document.querySelector(".product-numbering").innerText = quantityOfProducts
+}
 
 // let products = []
 // productColor.forEach((productColor) => {
