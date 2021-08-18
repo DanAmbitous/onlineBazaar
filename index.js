@@ -65,9 +65,46 @@ function productListDisplayer() {
   }
 }
 
+function removeProduct(e) {
+  for (const [key, value] of Object.entries(productNumbering)) {
+    const button = e.target.closest(".cart-item").querySelector("h2").innerText
+
+    let data = sessionStorage.getItem(key)
+    data = JSON.parse(data)
+
+    if (button === key) {
+      productNumbering[key] -= 1
+
+      if (productNumbering[key] === 0) {
+        sessionStorage.removeItem(key)
+        e.target.closest(".cart-item").remove()
+      } else {
+        data.quantity = productNumbering[key]
+        data.totalPrice = productNumbering[key] * data.basePrice
+        sessionStorage.setItem(key, JSON.stringify(data))
+
+        e.target
+          .closest(".cart-item")
+          .querySelector(".quantity").innerText = `x${productNumbering[key]}`
+        e.target
+          .closest(".cart-item")
+          .querySelector(".total-product-price").innerText = `$${
+          productNumbering[key] * data.basePrice
+        }.00`
+      }
+    }
+  }
+
+  if (productContainer.querySelectorAll(".cart-item").length === 0) {
+    productListDisplayer()
+  }
+}
+
 document.addEventListener("click", (e) => {
   if (e.target.classList.contains("cart-list-button")) {
     productListDisplayer()
+  } else if (e.target.classList.contains("remove-product")) {
+    removeProduct(e)
   }
 })
 
