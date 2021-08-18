@@ -46,6 +46,7 @@ function getProducts() {
 
   productListDisplayer()
   productQuantityTracker()
+  totalPrice()
 }
 
 getProducts()
@@ -101,6 +102,7 @@ function removeProduct(e) {
   }
 
   productQuantityTracker()
+  totalPrice()
 }
 
 document.addEventListener("click", (e) => {
@@ -126,6 +128,27 @@ function productQuantityTracker() {
   quantityOfProducts = quantityOfProducts.reduce(reducer, 0)
 
   document.querySelector(".product-numbering").innerText = quantityOfProducts
+}
+
+function totalPrice() {
+  const products = document.querySelectorAll(".cart-item")
+
+  let quantityOfProducts = []
+  const reducer = (accumulator, currentValue) => accumulator + currentValue
+
+  products.forEach((product) => {
+    quantityOfProducts.push(
+      Number(
+        product.querySelector(".total-product-price").innerText.substring(1)
+      )
+    )
+  })
+
+  quantityOfProducts = quantityOfProducts.reduce(reducer, 0)
+
+  document.querySelector(
+    ".grand-total-price"
+  ).innerText = `$${quantityOfProducts}.00`
 }
 
 // let products = []
