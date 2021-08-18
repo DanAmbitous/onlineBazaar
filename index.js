@@ -68,31 +68,46 @@ function productListDisplayer() {
 }
 
 function removeProduct(e) {
-  for (const [key, value] of Object.entries(productNumbering)) {
+  if (e.shiftKey === false) {
+    for (const [key, value] of Object.entries(productNumbering)) {
+      const button = e.target
+        .closest(".cart-item")
+        .querySelector("h2").innerText
+
+      let data = sessionStorage.getItem(key)
+      data = JSON.parse(data)
+
+      if (button === key) {
+        productNumbering[key] -= 1
+
+        if (productNumbering[key] === 0) {
+          sessionStorage.removeItem(key)
+          e.target.closest(".cart-item").remove()
+        } else {
+          data.quantity = productNumbering[key]
+          data.totalPrice = productNumbering[key] * data.basePrice
+          sessionStorage.setItem(key, JSON.stringify(data))
+
+          e.target
+            .closest(".cart-item")
+            .querySelector(".quantity").innerText = `x${productNumbering[key]}`
+          e.target
+            .closest(".cart-item")
+            .querySelector(".total-product-price").innerText = `$${
+            productNumbering[key] * data.basePrice
+          }.00`
+        }
+      }
+    }
+  } else {
     const button = e.target.closest(".cart-item").querySelector("h2").innerText
 
-    let data = sessionStorage.getItem(key)
-    data = JSON.parse(data)
-
-    if (button === key) {
-      productNumbering[key] -= 1
-
-      if (productNumbering[key] === 0) {
+    for (const [key, value] of Object.entries(productNumbering)) {
+      if (key === button) {
+        const product = cartProductList.querySelector(`.${key}`)
+        product.remove()
+        productNumbering[key] = 0
         sessionStorage.removeItem(key)
-        e.target.closest(".cart-item").remove()
-      } else {
-        data.quantity = productNumbering[key]
-        data.totalPrice = productNumbering[key] * data.basePrice
-        sessionStorage.setItem(key, JSON.stringify(data))
-
-        e.target
-          .closest(".cart-item")
-          .querySelector(".quantity").innerText = `x${productNumbering[key]}`
-        e.target
-          .closest(".cart-item")
-          .querySelector(".total-product-price").innerText = `$${
-          productNumbering[key] * data.basePrice
-        }.00`
       }
     }
   }
