@@ -20,7 +20,6 @@ function getProducts() {
   productColor.forEach((color) => {
     let data = sessionStorage.getItem(color)
     data = JSON.parse(data)
-    console.log(data)
 
     if (data != null) {
       for (const [key, value] of Object.entries(productNumbering)) {
@@ -37,7 +36,6 @@ function getProducts() {
       clone.querySelector(".quantity").innerText = `x${
         productNumbering[data.name]
       }`
-      console.log(productNumbering[data.name])
       clone.querySelector(".total-product-price").innerText = `$${
         data.quantity * data.price
       }.00`
@@ -48,3 +46,34 @@ function getProducts() {
 }
 
 getProducts()
+
+function removeProduct(e) {
+  console.log(e)
+  const parentElment = e.target.closest(".cart-item")
+  console.log(
+    productNumbering[
+      parentElment.querySelector(`.product-name-color`).innerText
+    ]
+  )
+  productNumbering[
+    parentElment.querySelector(`.product-name-color`).innerText
+  ] -= 1
+
+  console.log(
+    productNumbering[
+      parentElment.querySelector(`.product-name-color`).innerText
+    ]
+  )
+
+  parentElment.querySelector(`.quantity`).innerText = `x${
+    productNumbering[
+      parentElment.querySelector(`.product-name-color`).innerText
+    ]
+  }`
+}
+
+document.addEventListener("click", (e) => {
+  if (e.target.classList.contains("remove-product")) {
+    removeProduct(e)
+  }
+})
