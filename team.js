@@ -1,4 +1,5 @@
 const cartProductList = document.querySelector("#cart-product-list-container")
+const productContainer = document.querySelector(".list-container")
 
 const productColor = [
   "Red",
@@ -51,44 +52,86 @@ function getProducts() {
 getProducts()
 
 function removeProduct(e) {
-  let data = sessionStorage.getItem(
-    e.target.closest(".cart-item").querySelector(".product-name-color")
-      .innerText
-  )
-  data = JSON.parse(data)
+  if (e.shiftKey) {
+    const product = e.target.parentElement.parentElement
 
-  const parentElment = e.target.closest(".cart-item")
-  productNumbering[
-    parentElment.querySelector(`.product-name-color`).innerText
-  ] -= 1
+    productNumbering[product.querySelector(`.product-name-color`).innerText] = 0
 
-  parentElment.querySelector(`.quantity`).innerText = `x${
+    product.remove()
+  } else {
+    let data = sessionStorage.getItem(
+      e.target.closest(".cart-item").querySelector(".product-name-color")
+        .innerText
+    )
+    data = JSON.parse(data)
+
+    const parentElement = e.target.closest(".cart-item")
     productNumbering[
-      parentElment.querySelector(`.product-name-color`).innerText
-    ]
-  }`
+      parentElement.querySelector(`.product-name-color`).innerText
+    ] -= 1
 
-  document.querySelector(".total-product-price").innerText = `$${
-    productNumbering[
-      parentElment.querySelector(`.product-name-color`).innerText
-    ] * data.basePrice
-  }.00`
+    parentElement.querySelector(`.quantity`).innerText = `x${
+      productNumbering[
+        parentElement.querySelector(`.product-name-color`).innerText
+      ]
+    }`
 
-  if (
-    productNumbering[
-      parentElment.querySelector(`.product-name-color`).innerText
-    ] === 0
-  ) {
-    e.target.parentElement.parentElement.remove()
+    document.querySelector(".total-product-price").innerText = `$${
+      productNumbering[
+        parentElement.querySelector(`.product-name-color`).innerText
+      ] * data.basePrice
+    }.00`
+
+    if (
+      productNumbering[
+        parentElement.querySelector(`.product-name-color`).innerText
+      ] === 0
+    ) {
+      e.target.parentElement.parentElement.remove()
+    }
   }
 
   productQuantityTracker()
   totalPrice()
+  productListDisplayer()
 }
 
 document.addEventListener("click", (e) => {
   if (e.target.classList.contains("remove-product")) {
     removeProduct(e)
+  }
+})
+
+function productListDisplayer() {
+  const products = cartProductList.querySelectorAll(".cart-item")
+  if (products.length === 0) {
+    document.querySelector("#cart-button").dataset.status = "hide"
+    productContainer.style.display = "none"
+  } else if (document.querySelector("#cart-button").dataset.status === "hide") {
+    document.querySelector("#cart-button").dataset.status = "show"
+
+    productContainer.style.display = "block"
+  }
+}
+
+function manualProductListToggler(e) {
+  console.log("hi")
+
+  if (e.target.dataset.status === "show") {
+    productContainer.style.display = "none"
+    e.target.dataset.status = "hide"
+  } else {
+    productContainer.style.display = "block"
+    e.target.dataset.status = "show"
+  }
+
+  productListDisplayer()
+}
+
+document.addEventListener("click", (e) => {
+  if (e.target.classList.contains("cart-button")) {
+    console.log("hi -1")
+    manualProductListToggler(e)
   }
 })
 
