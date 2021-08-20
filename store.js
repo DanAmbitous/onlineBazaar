@@ -54,6 +54,21 @@ function addProduct(e) {
   product.name = e.target
     .closest(".product-container")
     .querySelector("h2").innerText
+  if (
+    e.target.closest(".product-container").querySelector("h2").innerText ===
+    "Light Gray"
+  ) {
+    product.name = e.target
+      .closest(".product-container")
+      .querySelector("h2").innerText = "LightGray"
+  } else if (
+    e.target.closest(".product-container").querySelector("h2").innerText ===
+    "Dark Gray"
+  ) {
+    product.name = e.target
+      .closest(".product-container")
+      .querySelector("h2").innerText = "DarkGray"
+  }
   product.price = Number(
     e.target
       .closest(".product-container")

@@ -144,6 +144,8 @@ function manualProductListToggler(e) {
   productListDisplayer()
 }
 
+productListDisplayer()
+
 document.addEventListener("click", (e) => {
   if (e.target.classList.contains("cart-button")) {
     console.log("hi -1")
