@@ -57,6 +57,10 @@ function removeProduct(e) {
 
     productNumbering[product.querySelector(`.product-name-color`).innerText] = 0
 
+    sessionStorage.removeItem(
+      product.querySelector(".product-name-color").innerText
+    )
+
     product.remove()
   } else {
     let data = sessionStorage.getItem(
@@ -82,11 +86,25 @@ function removeProduct(e) {
       ] * data.basePrice
     }.00`
 
+    data.quantity =
+      productNumbering[
+        parentElement.querySelector(`.product-name-color`).innerText
+      ]
+
+    sessionStorage.setItem(
+      parentElement.querySelector(`.product-name-color`).innerText,
+      JSON.stringify(data)
+    )
+
     if (
       productNumbering[
         parentElement.querySelector(`.product-name-color`).innerText
       ] === 0
     ) {
+      sessionStorage.removeItem(
+        parentElement.querySelector(`.product-name-color`).innerText
+      )
+
       e.target.parentElement.parentElement.remove()
     }
   }
@@ -115,8 +133,6 @@ function productListDisplayer() {
 }
 
 function manualProductListToggler(e) {
-  console.log("hi")
-
   if (e.target.dataset.status === "show") {
     productContainer.style.display = "none"
     e.target.dataset.status = "hide"
@@ -131,6 +147,23 @@ function manualProductListToggler(e) {
 document.addEventListener("click", (e) => {
   if (e.target.classList.contains("cart-button")) {
     console.log("hi -1")
+    manualProductListToggler(e)
+  } else if (e.target.id === "remove-all-products") {
+    const products = document.querySelectorAll(".cart-item")
+    console.log(productNumbering)
+
+    productColor.forEach((color) => {
+      productNumbering[color] = 0
+    })
+
+    products.forEach((product) => {
+      product.remove()
+    })
+
+    console.log(productNumbering)
+
+    productQuantityTracker()
+    totalPrice()
     manualProductListToggler(e)
   }
 })
