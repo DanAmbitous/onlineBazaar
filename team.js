@@ -43,33 +43,47 @@ function getProducts() {
       cartProductList.append(clone)
     }
   })
+
+  productQuantityTracker()
+  totalPrice()
 }
 
 getProducts()
 
 function removeProduct(e) {
-  console.log(e)
-  const parentElment = e.target.closest(".cart-item")
-  console.log(
-    productNumbering[
-      parentElment.querySelector(`.product-name-color`).innerText
-    ]
+  let data = sessionStorage.getItem(
+    e.target.closest(".cart-item").querySelector(".product-name-color")
+      .innerText
   )
+  data = JSON.parse(data)
+
+  const parentElment = e.target.closest(".cart-item")
   productNumbering[
     parentElment.querySelector(`.product-name-color`).innerText
   ] -= 1
-
-  console.log(
-    productNumbering[
-      parentElment.querySelector(`.product-name-color`).innerText
-    ]
-  )
 
   parentElment.querySelector(`.quantity`).innerText = `x${
     productNumbering[
       parentElment.querySelector(`.product-name-color`).innerText
     ]
   }`
+
+  document.querySelector(".total-product-price").innerText = `$${
+    productNumbering[
+      parentElment.querySelector(`.product-name-color`).innerText
+    ] * data.basePrice
+  }.00`
+
+  if (
+    productNumbering[
+      parentElment.querySelector(`.product-name-color`).innerText
+    ] === 0
+  ) {
+    e.target.parentElement.parentElement.remove()
+  }
+
+  productQuantityTracker()
+  totalPrice()
 }
 
 document.addEventListener("click", (e) => {
@@ -77,3 +91,41 @@ document.addEventListener("click", (e) => {
     removeProduct(e)
   }
 })
+
+function productQuantityTracker() {
+  const products = document.querySelectorAll(".cart-item")
+
+  let quantityOfProducts = []
+  const reducer = (accumulator, currentValue) => accumulator + currentValue
+
+  products.forEach((product) => {
+    quantityOfProducts.push(
+      Number(product.querySelector(".quantity").innerText.substring(1))
+    )
+  })
+
+  quantityOfProducts = quantityOfProducts.reduce(reducer, 0)
+
+  document.querySelector(".product-number").innerText = quantityOfProducts
+}
+
+function totalPrice() {
+  const products = document.querySelectorAll(".cart-item")
+
+  let quantityOfProducts = []
+  const reducer = (accumulator, currentValue) => accumulator + currentValue
+
+  products.forEach((product) => {
+    quantityOfProducts.push(
+      Number(
+        product.querySelector(".total-product-price").innerText.substring(1)
+      )
+    )
+  })
+
+  quantityOfProducts = quantityOfProducts.reduce(reducer, 0)
+
+  document.querySelector(
+    ".grand-total-price"
+  ).innerText = `$${quantityOfProducts}.00`
+}
