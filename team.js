@@ -162,6 +162,8 @@ document.addEventListener("click", (e) => {
 
     console.log(productNumbering)
 
+    sessionStorage.clear()
+
     productQuantityTracker()
     totalPrice()
     manualProductListToggler(e)
